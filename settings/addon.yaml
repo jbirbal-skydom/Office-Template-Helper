@@ -1,0 +1,42 @@
+# Main configuration for Visio add-ons
+visio:
+  brainstorm:
+    - file: "inside/inner.xml" # Path to the brainstorm file
+      edits: "<element5>Value 5</element5>" # Edits to apply
+      loc: "element2"
+      before: false
+  cff:
+    - file: "outer.xml" # Path to the cff file
+      edits: "<element6>Value 6</element6>" # Edits to apply
+      loc: "element2"
+      before: false
+
+    - file: "outer.xml" # Path to the brainstorm file
+      edits: "<element7>Value 7</element7>" # Edits to apply
+      loc: "element2"
+      before: false
+words:
+  xxx:
+    - file: "outer.xml" # Path to the cff file
+      edits: "<element6>Value 6</element6>" # Edits Fto apply
+      loc: "element2"
+      before: false
+
+excel:
+  brainstorm:
+    - file: "outer.xml" # Path to the excel file
+      edits: "<element6>Value 6</element6>" # Edits to apply
+      loc: "element2"
+      before: false
+
+access: {}
+
+powerpoint: {}
+
+onenote: {}
+
+publisher: {}
+
+windows: {}
+
+project: {}

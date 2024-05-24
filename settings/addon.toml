@@ -1,13 +1,27 @@
+# Main configuration for Visio add-ons
 [visio]
-brainstorm = "test"
-cff = "test"
+    # Configuration for the brainstorm feature
+    [[visio.brainstorm]]
+            file = "inside/inner.xml"  # Path to the brainstorm file
+            edits = "<element5>Value 5</element5>"  # Edits to apply
+    [[visio.brainstorm]]
+            file = "outer.xml"  # Path to the brainstorm file
+            edits = "<element7>Value 7</element7>"  # Edits to apply
 
+    # Configuration for the cff feature
+    [[visio.cff]]
+    file = "outer.xml"  # Path to the cff file
+    edits = "<element6>Value 6</element6>"  # Edits to apply
 
 [words]
-font = "calibrun"
+[[word.xxx]]
+    file = "outer.xml"  # Path to the cff file
+    edits = "<element6>Value 6</element6>"  # Edits to apply
 
 [excel]
-password = "test"
+    [[excel.brainstorm]]
+    file = "outer.xml"  # Path to the cff file
+    edits = "<element6>Value 6</element6>"  # Edits to apply
 
 [access]
 

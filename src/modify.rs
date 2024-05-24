@@ -4,7 +4,7 @@ use quick_xml::{Reader, Writer};
 use std::io::{self, Cursor};
 
 /// Modifies XML content according to specific rules.
-pub fn modify_xml(xml_content: &String) -> io::Result<String> {
+pub fn modify_xml(xml_content: &String, data: &String, loc: &String, before: &bool) -> io::Result<String> {
     let mut reader = Reader::from_str(&xml_content);
     reader.trim_text(true);
     let mut in_element2 = false; // Flag to detect when inside `element2`

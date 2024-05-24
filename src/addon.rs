@@ -1,123 +1,180 @@
-use serde::Deserialize;
+use serde_yaml::{from_reader, Value};
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::error::Error;
-use std::fs;
+use std::fs::File;
 
-#[derive(Deserialize, Debug)]
-struct Config {
-    // This will capture any top-level sections with their key-value pairs
-    #[serde(flatten)]
-    sections: HashMap<String, HashMap<String, String>>,
+// Define a structure to hold the overall section details
+pub struct SectionDetail {
+    pub name: String,
+    pub subsections: Vec<SubsectionDetail>,
+}
+// Define a structure to hold the details of each subsection
+pub struct SubsectionDetail {
+    pub name: String,
+    pub file: String,
+    pub edit: String,
+    pub count: usize,
+    pub loc: String,
+    pub before: bool
 }
 
-fn load_config(file_path: &str) -> Result<Config, Box<dyn Error>> {
+
+fn load_config(file_path: &str) -> Result<HashMap<String, Value>, Box<dyn Error>> {
     println!("Loading configuration from: {}", file_path);
-    let config_contents = fs::read_to_string(file_path)?;
-    let config: Config = toml::from_str(&config_contents)?;
+    let file = File::open(file_path)?;
+    let config: HashMap<String, Value> = from_reader(file)?;
     Ok(config)
 }
 
 //return a 2d array of the addon and extension sections
-pub fn initialize_addons() -> Result<(), Box<dyn Error>> {
+pub fn initialize_addons() -> Result<(Vec<SectionDetail>, HashMap<String, Value>), Box<dyn Error>> {
     println!("Add-ons initialized.");
-    let addon = load_config("./settings/addon.toml")?;
-    let extension = load_config("./settings/valid_file.toml")?;
+    let addon = load_config("./settings/addon.yaml")?;
+    let extension = load_config("./settings/valid_file.yaml")?;
 
-    // println!("Addon Sections: {:?}", addon.sections);
-    // println!("Extension Sections: {:?}", extension.sections);
+    let sections_details = collect_sections_and_counts(&addon);
 
-    for (section, values) in addon.sections {
-        println!(
-            "Addon variable {} = {{{}}}",
-            section,
-            values.keys().cloned().collect::<Vec<_>>().join(", ")
-        );
-    }
-    for (section, values) in extension.sections.clone() {
-        println!(
-            "Extension variable {} = {{{}}}",
-            section,
-            values.keys().cloned().collect::<Vec<_>>().join(", ")
-        );
-    }
-
-    Ok(())
+    Ok((sections_details, extension))
 }
 
-pub fn compare_zip_contents(
-    ref_entries: &[(String, String)],
-    test_entries: &[(String, String)],
-) -> bool {
-    // Convert vectors to hash maps for easy lookup
-    let original_map: HashMap<&String, &String> = ref_entries
-        .iter()
-        .map(|(path, content)| (path, content))
-        .collect();
-    let new_map: HashMap<&String, &String> = test_entries
-        .iter()
-        .map(|(path, content)| (path, content))
-        .collect();
+fn collect_sections_and_counts(config: &HashMap<String, Value>) -> Vec<SectionDetail> {
+    let mut details: Vec<SectionDetail> = Vec::new();
 
-    // Check if both archives have the same set of files
-    if original_map.len() != new_map.len() {
-        return false;
-    }
+    for (section_name, section_value) in config {
+        let mut section_detail = SectionDetail {
+            name: section_name.clone(),
+            subsections: Vec::new(),
+        };
 
-    // Compare the content of each file
-    for (path, original_content) in &original_map {
-        if let Some(new_content) = new_map.get(path) {
-            if original_content != new_content {
-                return false; // Contents do not match
+        if let Value::Mapping(subsections) = section_value {
+            for (sub_name, sub_value) in subsections {
+                if let Value::Sequence(entries) = sub_value {
+                    let count = entries.len(); // Correct counting here
+                    for entry in entries {
+                        if let Value::Mapping(entry_details) = entry {
+                            let file = entry_details.get("file").and_then(|v| v.as_str()).unwrap_or("").to_string();
+                            let edit = entry_details.get("edits").and_then(|v| v.as_str()).unwrap_or("").to_string();
+                            let loc = entry_details.get("loc").and_then(|v| v.as_str()).unwrap_or("").to_string();
+                            let before = entry_details.get("bool").and_then(|v| v.as_bool()).unwrap_or(false);
+                            section_detail.subsections.push(SubsectionDetail {
+                                name: sub_name.as_str().unwrap_or("unknown").to_string(),
+                                file,
+                                edit,
+                                count,
+                                loc,
+                                before,
+                            });
+                        }
+                    }
+                } else {
+                    // Handle case where the structure is not as expected
+                    section_detail.subsections.push(SubsectionDetail {
+                        name: sub_name.as_str().unwrap_or("unknown").to_string(),
+                        file: String::new(),
+                        edit: String::new(),
+                        loc: String::new(),
+                        before: false,
+                        count: 0,
+                    });
+                }
             }
-        } else {
-            return false; // File path does not exist in the new archive
         }
+
+        details.push(section_detail);
     }
 
-    true // All files match
+    details
 }
-
 //compare file paths in a zip
-pub fn compare_zip_files_path(
-    ref_entries: &[(String, String)],
-    test_entries: &[(String, String)],
-) -> bool {
-    // get the first element of the tuple of the enteries variable and compare the file paths
-    let ref_paths: Vec<String> = ref_entries.iter().map(|(path, _)| path.clone()).collect();
-    let test_paths: Vec<String> = test_entries.iter().map(|(path, _)| path.clone()).collect();
+pub fn compare_zip_files_path(ref_entries: &[String], test_entries: &[String]) -> bool {
+    let ref_set: HashSet<_> = ref_entries.iter().collect();
+    let test_set: HashSet<_> = test_entries.iter().collect();
 
-    //compare the paths of the ref and test zip files by looping through the paths i the ref_paths variable and test_paths variable
-    for path in ref_paths {
-        println!("\t  path: {}", path);
-        if !test_paths.contains(&path) {
-            return false;
+    // Check if both sets contain the same elements
+    if ref_set == test_set {
+        true
+    } else {
+        // Optionally, you can identify which paths are missing in each set
+        let missing_in_ref = test_set.difference(&ref_set);
+        let missing_in_test = ref_set.difference(&test_set);
+
+        for path in missing_in_ref {
+            println!("\tMissing in reference: {}", path);
         }
-    }
 
-    //if the path is not found in the test_paths variable return false else return true
-    return true;
+        for path in missing_in_test {
+            println!("\tMissing in test: {}", path);
+        }
+
+        false
+    }
 }
 
 // fine the associated reference zip to compare
 pub fn find_reference_zip(ext: &str) -> Result<String, Box<dyn Error>> {
-    // to check for the path use the below code:
-    let extension = load_config("./settings/valid_file.toml").unwrap();
-    println!("looking for reference zip for '{}'", ext);
-    if let Some(paths) = extension.sections.get("reference") {
-        if let Some(refer_path) = paths.get(ext) {
-            println!("reference zip for '{}': {:?}", ext, refer_path);
-            return Ok(refer_path.clone());
+    println!("Looking for reference zip for '{}'", ext);
+    let config = load_config("./settings/valid_file.yaml")?;
+
+    // Assume 'reference' is a top-level key in the YAML that maps to a dictionary
+    if let Some(Value::Mapping(reference_map)) = config.get("reference") {
+        if let Some(Value::String(refer_path)) = reference_map.get(&Value::String(ext.to_string()))
+        {
+            println!("Reference zip for '{}': {}", ext, refer_path);
+            Ok(refer_path.clone())
         } else {
-            Err(Box::new(std::io::Error::new(std::io::ErrorKind::NotFound, format!("{} key not found", ext))))
+            Err(Box::new(std::io::Error::new(
+                std::io::ErrorKind::NotFound,
+                format!("{} key not found", ext),
+            )))
         }
     } else {
-        Err(Box::new(std::io::Error::new(std::io::ErrorKind::NotFound, "paths section not found")))
-
+        Err(Box::new(std::io::Error::new(
+            std::io::ErrorKind::NotFound,
+            "reference section not found",
+        )))
     }
 }
 
-// find the associated test add snippet to deliver to the modifier
-pub fn find_test_add_snippet(addon: &str) -> String {
-    unimplemented!("find_test_add_snippet function not implemented yet");
-    //let addon = load_config("./setting/addon.toml")?;
+// find the section and the amount of edits and which file to edit
+// the function will take in the zip path,the add-on name, and the section_details( this will be a struct with the the inner file path and the edit)
+// will return a a vector of the file: edit 
+pub fn find_section_and_edits(
+    program: &str,
+    addon: &str,
+    sections_details: &Vec<SectionDetail>,
+) -> Result<Vec<(String, String, String, bool)>, Box<dyn Error>> {
+    let mut edits = Vec::new();
+
+    // Loop through each section detail
+    for section in sections_details {
+        if section.name == program {
+            for subsection in &section.subsections {
+                if subsection.name == addon {
+                    if subsection.count > 0 {
+                        edits.push((subsection.file.clone(), subsection.edit.clone(), subsection.loc.clone(), subsection.before.clone()));
+                    } else {
+                        return Err(Box::new(std::io::Error::new(
+                            std::io::ErrorKind::NotFound,
+                            format!("No edits required for add-on: {}", addon),
+                        )));
+                    }
+                }
+            }
+            if edits.is_empty() {
+                return Err(Box::new(std::io::Error::new(
+                    std::io::ErrorKind::NotFound,
+                    format!("Add-on not found: {}", addon),
+                )));
+            }
+            return Ok(edits);
+        }
+    }
+
+    Err(Box::new(std::io::Error::new(
+        std::io::ErrorKind::NotFound,
+        format!("Program not found: {}", program),
+    )))
 }
+
+
