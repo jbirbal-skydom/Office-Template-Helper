@@ -1,21 +1,18 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'office-template-helper'",
+            "name": "Debug executable 'office-template-helper-CLI'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=office-template-helper",
+                    "--bin=office-template-helper-CLI",
                     "--package=office-template-helper"
                 ],
                 "filter": {
-                    "name": "office-template-helper",
+                    "name": "office-template-helper-CLI",
                     "kind": "bin"
                 }
             },
@@ -25,16 +22,16 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in executable 'office-template-helper'",
+            "name": "Debug unit tests in executable 'office-template-helper-CLI'",
             "cargo": {
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=office-template-helper",
+                    "--bin=office-template-helper-CLI",
                     "--package=office-template-helper"
                 ],
                 "filter": {
-                    "name": "office-template-helper",
+                    "name": "office-template-helper-CLI",
                     "kind": "bin"
                 }
             },

@@ -1,15 +1,40 @@
 // slint::include_modules!();
 use std::error::Error;
+use std::io::{self, BufRead};
 
 mod addon;
+mod arguments;
 mod file_handler; // Ensure the file name matches the module name, consider renaming it to file_handler.rs to follow Rust conventions
 mod modify;
 
 fn main() -> Result<(), Box<dyn Error>> {
+    println!(
+        "
+     ____  _                _     _____ _           _ _     _             
+    / __ \\| |              | |   |_   _| |         | (_)   | |            
+   | |  | | |__   ___  _ __| |_    | | | |__   __ _| |_ ___| |_ ___  _ __ 
+   | |  | | '_ \\ / _ \\| '__| __|   | | | '_ \\ / _` | | / __| __/ _ \\| '__|
+   | |__| | | | | (_) | |  | |_   _| |_| | | | (_| | | \\__ \\ || (_) | |   
+    \\____/|_| |_|\\___/|_|   \\__| |_____|_| |_|\\__,_|_|_|___/\\__\\___/|_|   
+    "
+    );
+
+    // Parse arguments using the CLI module
+
+    let config = arguments::parse_args();
+
+    let arg_file = config.file;
+    let arg_program = config.program;
+    let arg_addon = config.addon;
+    
+    println!("Operating on file: {}", &arg_file);
+    println!("Program: {}", &arg_program);
+    println!("Addon: {}", &arg_addon);
+
     println!("Starting application...");
 
     // Example calls to functions in your modules
-    let (sections_details, ext) = match addon::initialize_addons() {
+    let (sections_details, _ext) = match addon::initialize_addons() {
         Ok(data) => data,
         Err(e) => {
             // Log the error and exit if the initialization fails
@@ -30,7 +55,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("_____________get file_______________");
 
-    let normalized_base = "./test/blank.vsdx".replace("\\", "/");
+    let normalized_base = arg_file.replace("\\", "/");
     let (ext, file) = file_handler::check_file(&normalized_base);
     println!("file path {}, has the File extension: {}", file, ext);
 
@@ -71,8 +96,8 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // get the addon snippet
     println!("_____________Get edits_______________");
-    let program: &str = "visio";
-    let addin: &str = "brainstorm";
+    let program: &str = &arg_program;
+    let addin: &str = &arg_addon;
     let edits = match addon::find_section_and_edits(program, addin, &sections_details) {
         Ok(edits) => edits,
         Err(e) => {
@@ -97,7 +122,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("file content: {}", formatted);
         println!("-------");
         let res = modify::modify_xml(&file_content_str, &changes, &location, after)?; // Pass String as reference
-                                                                                       //if okay the print the result
+                                                                                      //if okay the print the result
         formatted = modify::prettify_xml(&res)?;
         println!("formatted: {}", formatted);
         println!("____________________________");
@@ -107,29 +132,20 @@ fn main() -> Result<(), Box<dyn Error>> {
         );
         file_handler::write_content_to_zip(&new_file, &inner_path, &res)?;
         println!("-----------------------------");
-
-
     }
-    
+
     // Change the extension of the new file back to the original extension
     let original_filetype = file_handler::change_extension_to_original(&new_file, &ext);
     println!("Changed extension back to original: {}", original_filetype);
     println!("_________________________");
 
     println!(" Operation completed.");
+
+    // Wait specifically for the Enter key
+    let stdin = io::stdin();
+    let mut iterator = stdin.lock().lines();
+    iterator.next().unwrap().unwrap(); // Read one line, which includes the newline character
+
+    arguments::end_of_program();
     Ok(()) // Explicitly return Ok(()) to signify successful execution
 }
-
-// fn main() -> Result<(), slint::PlatformError> {
-//     let ui = AppWindow::new()?;
-
-//     ui.on_request_increase_value({
-//         let ui_handle = ui.as_weak();
-//         move || {
-//             let ui = ui_handle.unwrap();
-//             ui.set_counter(ui.get_counter() + 1);
-//         }
-//     });
-
-//     ui.run()
-// }
