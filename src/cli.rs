@@ -21,7 +21,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // Parse arguments using the CLI module
 
-    let config = arguments::parse_args();
+    let config = arguments::start();
 
     let arg_file = config.file;
     let arg_program = config.program;
