@@ -1,10 +1,10 @@
 // src/file_handler.rs
 use std::fs::{self, File};
+use std::io::Read;
 use std::io::{self, Write};
 use std::path::Path;
 use zip::write::SimpleFileOptions;
 use zip::{ZipArchive, ZipWriter};
-use std::io::Read;
 
 // check file validity and check the file extension and return the file extension and path of the file
 pub fn check_file(file_path: &str) -> (String, String) {
@@ -14,7 +14,7 @@ pub fn check_file(file_path: &str) -> (String, String) {
     (ext, path)
 }
 
-/// Changes the extension of a file to the original extension specified.
+// Changes the extension of a file to the original extension specified.
 pub fn change_extension_to_original(file_path: &str, original_ext: &str) -> String {
     let path = Path::new(file_path);
     let new_path = path.with_extension(original_ext);
@@ -47,17 +47,41 @@ pub fn open_zip(file_path: &str, include_zip_path: bool) -> io::Result<Vec<Strin
 }
 
 /// Writes content to a ZIP file and compresses it.
-pub fn write_content_to_zip(zip_path: &str, inner_path: &str, content: &str) -> io::Result<()> {
-    let path = Path::new(zip_path);
-    let file = File::create(&path)?;
-    let mut zip = ZipWriter::new(file);
+/// Modifies content of a specific file within a zip archive, keeping other files intact.
+pub fn write_content_to_zip(source: &String, target_file: &str, modify: &String) -> io::Result<()> {
+    let temp_path = format!("{}.tmp", source);
+    let destination = Path::new(&temp_path);
+    let reader = File::open(source)?;
+    let mut zip = ZipArchive::new(reader)?;
 
-    let options = SimpleFileOptions::default().compression_method(zip::CompressionMethod::Stored);
+    let writer = File::create(destination)?;
+    let mut zip_writer = ZipWriter::new(writer);
 
-    println!("writing to zip file:{:?} {}", path, inner_path);
-    zip.start_file(inner_path, options)?;
-    zip.write_all(content.as_bytes())?;
-    zip.finish()?;
+    for i in 0..zip.len() {
+        let mut file = zip.by_index(i)?;
+        let options = SimpleFileOptions::default().compression_method(zip::CompressionMethod::Stored);
+
+        if file.name() == target_file {
+            let mut contents = Vec::new();
+            file.read_to_end(&mut contents)?;
+            let modified_contents = modify.as_bytes();
+            zip_writer.start_file(file.name(), options)?;
+            zip_writer.write_all(&modified_contents)?;
+        } else {
+            let mut contents = Vec::new();
+            file.read_to_end(&mut contents)?;
+            zip_writer.start_file(file.name(), options)?;
+            zip_writer.write_all(&contents)?;
+        }
+    }
+
+    zip_writer.finish()?;
+
+    // Replace the original file with the new zip
+    fs::remove_file(source)?;  // Delete the original file
+    fs::rename(destination, source)?;  // Rename the temporary file to the original file name
+
+
     Ok(())
 }
 
@@ -76,9 +100,12 @@ pub fn read_zip_file_content(zip_file_path: &str, internal_file_path: &str) -> i
     let file = File::open(zip_file_path)?;
     let mut archive = ZipArchive::new(file)?;
 
+    // print the file being read
+    println!("reading file: {} - {}", zip_file_path, internal_file_path);
+
     for i in 0..archive.len() {
         let mut file = archive.by_index(i)?;
-        
+
         if file.name() == internal_file_path {
             let mut contents = Vec::new();
             file.read_to_end(&mut contents)?;
@@ -86,5 +113,8 @@ pub fn read_zip_file_content(zip_file_path: &str, internal_file_path: &str) -> i
         }
     }
 
-    Err(io::Error::new(io::ErrorKind::NotFound, "File not found in the ZIP archive"))
+    Err(io::Error::new(
+        io::ErrorKind::NotFound,
+        "File not found in the ZIP archive",
+    ))
 }

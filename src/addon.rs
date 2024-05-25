@@ -56,7 +56,7 @@ fn collect_sections_and_counts(config: &HashMap<String, Value>) -> Vec<SectionDe
                             let file = entry_details.get("file").and_then(|v| v.as_str()).unwrap_or("").to_string();
                             let edit = entry_details.get("edits").and_then(|v| v.as_str()).unwrap_or("").to_string();
                             let loc = entry_details.get("loc").and_then(|v| v.as_str()).unwrap_or("").to_string();
-                            let before = entry_details.get("bool").and_then(|v| v.as_bool()).unwrap_or(false);
+                            let before = entry_details.get("before").and_then(|v| v.as_bool()).unwrap_or(false);
                             section_detail.subsections.push(SubsectionDetail {
                                 name: sub_name.as_str().unwrap_or("unknown").to_string(),
                                 file,
@@ -161,12 +161,16 @@ pub fn find_section_and_edits(
                     }
                 }
             }
+            for edit in edits.iter() {
+                println!("edit found: {:?}", edit);
+            }
             if edits.is_empty() {
                 return Err(Box::new(std::io::Error::new(
                     std::io::ErrorKind::NotFound,
                     format!("Add-on not found: {}", addon),
                 )));
             }
+
             return Ok(edits);
         }
     }

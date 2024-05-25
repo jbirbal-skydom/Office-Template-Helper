@@ -28,22 +28,18 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!(); // End the line after listing subsections
     }
 
-
-  
-
-
     println!("_____________get file_______________");
 
-    let normalized_base = "./test/simple.xyz".replace("\\", "/");
+    let normalized_base = "./test/complex.abc".replace("\\", "/");
     let (ext, file) = file_handler::check_file(&normalized_base);
     println!("file path {}, has the File extension: {}", file, ext);
 
-    println!("_____________Cope and verify file_______________");
+    println!("_____________Copy and verify file_______________");
     //copy the zip file to a new file
     let new_file = file_handler::copy_zip(&normalized_base).unwrap();
     println!("new file path: {}", new_file);
 
-    // Open zip and read all file paths and their contents
+    // Open zip and read all file paths
     let entries = file_handler::open_zip(&file, false)?;
     let new_entries = file_handler::open_zip(&new_file, false)?;
 
@@ -57,7 +53,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // Compare the file paths of the original zip file with the ref zip file
     match addon::find_reference_zip(&ext) {
         Ok(ref_zip) => {
-            // Open zip and read all file paths and their contents
+            // Open zip and read all file paths
             let ref_entries = file_handler::open_zip(&ref_zip, false)?;
             if addon::compare_zip_files_path(&ref_entries, &entries) {
                 println!("The ZIP archives have the same file paths.");
@@ -67,7 +63,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
         Err(e) => println!("Error finding reference zip: {:?}", e),
     }
-    
+
+    //print the files in the zip
+    for entry in &new_entries {
+        println!("file: {}", entry);
+    }
+
     // get the addon snippet
     println!("_____________Get edits_______________");
     let program: &str = "visio";
@@ -79,9 +80,11 @@ fn main() -> Result<(), Box<dyn Error>> {
             return Err(e);
         }
     };
+
     //modify the xml content
     println!("_____________modifying_______________");
     for edit in edits {
+        println!("-----------------------------");
         let inner_path = edit.0;
         let changes = edit.1;
         let location = edit.2;
@@ -90,28 +93,30 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("location: {} before {}", location, before);
         let file_content = file_handler::read_zip_file_content(&new_file, &inner_path)?;
         let file_content_str = std::str::from_utf8(&file_content)?.to_string(); // Convert &str to String
-        println!("file content: {}", file_content_str);
+        let mut formatted = modify::prettify_xml(&file_content_str)?;
+        println!("file content: {}", formatted);
         println!("-------");
-        let res = modify::modify_xml(&file_content_str, &changes, &location, &before )?; // Pass String as reference
-        //if okay the print the result
-        let formatted = modify::prettify_xml(&res)?;
+        let res = modify::modify_xml(&file_content_str, &changes, &location, before)?; // Pass String as reference
+                                                                                       //if okay the print the result
+        formatted = modify::prettify_xml(&res)?;
         println!("formatted: {}", formatted);
         println!("____________________________");
-        println!("writing the content to the zip file: {} - {}", &new_file, &inner_path);
+        println!(
+            "writing the content to the zip file: {} - {}",
+            &new_file, &inner_path
+        );
         file_handler::write_content_to_zip(&new_file, &inner_path, &res)?;
+        println!("-----------------------------");
+
+
     }
     
-    
+    // Change the extension of the new file back to the original extension
+    let original_filetype = file_handler::change_extension_to_original(&new_file, &ext);
+    println!("Changed extension back to original: {}", original_filetype);
+    println!("_________________________");
 
-
-
-
-    // // Change the extension of the new file back to the original extension
-    // let original_ext = "abc";
-    // let original_filetype = file_handler::change_extension_to_original(&new_file, original_ext);
-    // println!("Changed extension back to original: {}", original_filetype);
-
-    // println!(" Operation completed.");
+    println!(" Operation completed.");
     Ok(()) // Explicitly return Ok(()) to signify successful execution
 }
 
