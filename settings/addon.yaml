@@ -1,6 +1,6 @@
 # Main configuration for Visio add-ons
 visio:
-  brainstorm:
+  init:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: > # add EventList element
         <EventList>
@@ -8,6 +8,7 @@ visio:
       loc: "VisioDocument"
       after: false
 
+  brainstorm:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: > # add EventItem element
         <EventItem ID='0' EventCode='1' Action='1' Enabled='1' Target='BRAINSTORM' TargetArgs='/cmd=DocCreated'/>
@@ -16,16 +17,35 @@ visio:
 
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: >
-        <EventItem ID='1' EventCode='2' Action='1' Enabled='1' Target='BRAINSTORM' TargetArgs='/cmd=DocOpened'/>      loc: "EventList"
-      after: false
+        <EventItem ID='1' EventCode='2' Action='1' Enabled='1' Target='BRAINSTORM' TargetArgs='/cmd=DocOpened'/>
       loc: "EventList"
+      after: false
 
   cff:
-    - file: "inside/inner.xml" # Path to the brainstorm file
-      edits: "<element5>Value 5</element5>" # Edits to apply
-      loc: "element2"
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: >
+        <EventItem ID='48' EventCode='1' Action='1' Enabled='1' Target='CFF14' TargetArgs='/cmd=1'/>
+      loc: "EventList"
       after: false
-      
+
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: >
+        <EventItem ID='49' EventCode='2' Action='1' Enabled='1' Target='CFF14' TargetArgs='/cmd=2'/>
+      loc: "EventList"
+      after: false
+
+  ts:
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: >
+        <EventItem ID='15' EventCode='1' Action='1' Enabled='1' Target='ts' TargetArgs='/cmd=22'/>
+      loc: "EventList"
+      after: false
+
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: >
+        <EventItem ID='14' EventCode='2' Action='1' Enabled='1' Target='ts' TargetArgs='/cmd=22'/>
+      loc: "EventList"
+      after: false
 
     # - file: "complex.xml" # Path to the cff file
     #   edits: "<element6>Value 6</element6>" # Edits to apply

@@ -1,6 +1,0 @@
-[reference]
-docx = "./reference/word.docx"
-xlsx = "./reference/excel.xlsx"
-pptx = "./reference/powerpoint.pptx"
-vsdx = "./reference/visio.vsdx"
-xyz = "./reference/simple.xz"
