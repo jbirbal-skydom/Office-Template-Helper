@@ -1,13 +1,12 @@
 # Main configuration for Visio add-ons
 visio:
-  init:
+  EventList:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: > # add EventList element
         <EventList>
         </EventList>
       loc: "VisioDocument"
       after: false
-
   brainstorm:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: > # add EventItem element
