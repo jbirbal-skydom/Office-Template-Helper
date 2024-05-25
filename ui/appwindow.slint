@@ -1,9 +1,13 @@
 import { GridBox, StandardButton, Button } from "std-widgets.slint";
 import { CheckBox, ComboBox, TextEdit, ScrollView } from "std-widgets.slint";
 
-export component AppWindow inherits Window {
+export component Office inherits Window {
     in-out property <int> counter: 42;
     callback request-increase-value();
+    callback open_dialog();
+    in-out property <string> file_path: "No file selected";
+    in-out property <string> output_text: "If the add-on does not work: \n    Please select the program and select initialize.";
+
     min-width: 500px;
     min-height: 400px;
     title: "Example GUI";
@@ -19,25 +23,17 @@ export component AppWindow inherits Window {
         FileSelector := HorizontalLayout {
             padding-top: 40px;
             width: 100%;
-            height: 20%;
             Button {
-                width: 100px;
-                height: 20px;
+                min-width: 150px;
+                min-height: 25px;
                 text: "Open File";
                 clicked => {
-                    // FileDialog::open_single_file("Select a file", "", |file_path| {
-                    //     if let Some(path) = file_path {
-                    //         file_path_text.text = path;
-                    //     } else {
-                        //         file_path_text.text = "No file selected";
-                        //     }
-                        // });
+                    root.open_dialog();
                     }
             }
 
             Text {
-                // id: file_path_text;
-                    text: "No file selected";
+                    text: file_path;
             }
         }
 
@@ -93,7 +89,8 @@ export component AppWindow inherits Window {
             }
         }
 
-        HorizontalLayout {
+        logger := HorizontalLayout {
+            padding-top: 10px;
             //width: 100%;
             
                 //alignment: center; // This will center the child widget horizontally
@@ -102,10 +99,11 @@ export component AppWindow inherits Window {
                 // center the text editor
                 
                 ScrollView {
+                    padding-top: 10px;
                 TextEdit {
                     min-width: 490px;
-                    min-height: 200px;
-                    text: "If the add-on does not work: \n    Please select the program and select initialze.";
+                    min-height: 150px;
+                    text: output_text;
                     // Since the TextEdit is the only child inside the ScrollView, it will fill the ScrollView's size
                     }
             }

@@ -6,6 +6,7 @@ use std::path::Path;
 use zip::write::SimpleFileOptions;
 use zip::{ZipArchive, ZipWriter};
 
+
 // check file validity and check the file extension and return the file extension and path of the file
 pub fn check_file(file_path: &str) -> (String, String) {
     let path = Path::new(file_path);
@@ -118,3 +119,5 @@ pub fn read_zip_file_content(zip_file_path: &str, internal_file_path: &str) -> i
         "File not found in the ZIP archive",
     ))
 }
+
+
