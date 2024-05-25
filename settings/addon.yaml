@@ -1,31 +1,47 @@
 # Main configuration for Visio add-ons
 visio:
   brainstorm:
-    - file: "inside/inner.xml" # Path to the brainstorm file
-      edits: "<element5>Value 5</element5>" # Edits to apply
-      loc: "element2"
-      before: false
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: > # add EventList element
+        <EventList>
+        </EventList>
+      loc: "VisioDocument"
+      after: false
+
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: > # add EventItem element
+        <EventItem ID='0' EventCode='1' Action='1' Enabled='1' Target='BRAINSTORM' TargetArgs='/cmd=DocCreated'/>
+      loc: "EventList"
+      after: false
+
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: >
+        <EventItem ID='1' EventCode='2' Action='1' Enabled='1' Target='BRAINSTORM' TargetArgs='/cmd=DocOpened'/>      loc: "EventList"
+      after: false
+      loc: "EventList"
+
   cff:
     - file: "inside/inner.xml" # Path to the brainstorm file
       edits: "<element5>Value 5</element5>" # Edits to apply
       loc: "element2"
-      before: false
+      after: false
+      
 
-    - file: "complex.xml" # Path to the cff file
-      edits: "<element6>Value 6</element6>" # Edits to apply
-      loc: "book"
-      before: true
+    # - file: "complex.xml" # Path to the cff file
+    #   edits: "<element6>Value 6</element6>" # Edits to apply
+    #   loc: "book"
+    #   after: true
 
-    - file: "complex.xml" # Path to the brainstorm file
-      edits: "<element7>Value 7</element7>" # Edits to apply
-      loc: "magazine"
-      before: false
+    # - file: "complex.xml" # Path to the brainstorm file
+    #   edits: "<element7>Value 7</element7>" # Edits to apply
+    #   loc: "magazine"
+    #   after: false
 words:
   xxx:
     - file: "outer.xml" # Path to the cff file
       edits: "<element6>Value 6</element6>" # Edits Fto apply
       loc: "element2"
-      before: false
+      after: false
 
 excel:
   brainstorm:

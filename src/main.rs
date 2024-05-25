@@ -30,7 +30,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!("_____________get file_______________");
 
-    let normalized_base = "./test/complex.abc".replace("\\", "/");
+    let normalized_base = "./test/blank.vsdx".replace("\\", "/");
     let (ext, file) = file_handler::check_file(&normalized_base);
     println!("file path {}, has the File extension: {}", file, ext);
 
@@ -72,7 +72,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     // get the addon snippet
     println!("_____________Get edits_______________");
     let program: &str = "visio";
-    let addin: &str = "cff";
+    let addin: &str = "brainstorm";
     let edits = match addon::find_section_and_edits(program, addin, &sections_details) {
         Ok(edits) => edits,
         Err(e) => {
@@ -88,15 +88,15 @@ fn main() -> Result<(), Box<dyn Error>> {
         let inner_path = edit.0;
         let changes = edit.1;
         let location = edit.2;
-        let before = edit.3;
+        let after = edit.3;
         println!("editing: {:?}: {}", inner_path, changes);
-        println!("location: {} before {}", location, before);
+        println!("location: {} after {}", location, after);
         let file_content = file_handler::read_zip_file_content(&new_file, &inner_path)?;
         let file_content_str = std::str::from_utf8(&file_content)?.to_string(); // Convert &str to String
         let mut formatted = modify::prettify_xml(&file_content_str)?;
         println!("file content: {}", formatted);
         println!("-------");
-        let res = modify::modify_xml(&file_content_str, &changes, &location, before)?; // Pass String as reference
+        let res = modify::modify_xml(&file_content_str, &changes, &location, after)?; // Pass String as reference
                                                                                        //if okay the print the result
         formatted = modify::prettify_xml(&res)?;
         println!("formatted: {}", formatted);

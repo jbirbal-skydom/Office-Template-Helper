@@ -6,7 +6,7 @@ use quick_xml::{Reader, Writer};
 use std::io::{self, Cursor, Error as IoError, ErrorKind};
 
 /// Modifies XML content according to specific rules.
-pub fn modify_xml(xml_content: &str, data: &str, loc: &str, before: bool) -> io::Result<String> {
+pub fn modify_xml(xml_content: &str, data: &str, loc: &str, after: bool) -> io::Result<String> {
     let mut reader = Reader::from_str(xml_content);
     reader.trim_text(true);
 
@@ -16,7 +16,7 @@ pub fn modify_xml(xml_content: &str, data: &str, loc: &str, before: bool) -> io:
         match reader.read_event() {
             Ok(Event::End(ref e)) if e.name().as_ref() == loc.as_bytes() => {
                 // Write the original end event first if insertion should be after
-                if !before {
+                if after {
                     writer
                         .write_event(Event::End(e.to_owned()))
                         .map_err(xml_to_io_error)?;
@@ -25,8 +25,8 @@ pub fn modify_xml(xml_content: &str, data: &str, loc: &str, before: bool) -> io:
                 // Parse the data as a new XML element and insert
                 insert_xml_element(&mut writer, data)?;
 
-                // If before, write the end tag after inserting the new element
-                if before {
+                // If after, write the end tag after inserting the new element
+                if !after {
                     writer
                         .write_event(Event::End(e.to_owned()))
                         .map_err(xml_to_io_error)?;
@@ -62,6 +62,10 @@ fn insert_xml_element(writer: &mut Writer<Cursor<Vec<u8>>>, data: &str) -> io::R
                     .map_err(xml_to_io_error)?;
                 break; // Exit after the end tag is processed
             }
+            Ok(Event::Empty(ref e)) => {
+                writer.write_event(Event::Empty(e.to_owned())).map_err(xml_to_io_error)?;
+                break; // Exit as this is a self-closing tag
+            },
             Ok(Event::Eof) => break, // Handle case where data may not be a complete element
             _ => (),                 // Ignore other events for simplicity
         }

@@ -16,7 +16,7 @@ pub struct SubsectionDetail {
     pub edit: String,
     pub count: usize,
     pub loc: String,
-    pub before: bool
+    pub after: bool
 }
 
 
@@ -56,14 +56,14 @@ fn collect_sections_and_counts(config: &HashMap<String, Value>) -> Vec<SectionDe
                             let file = entry_details.get("file").and_then(|v| v.as_str()).unwrap_or("").to_string();
                             let edit = entry_details.get("edits").and_then(|v| v.as_str()).unwrap_or("").to_string();
                             let loc = entry_details.get("loc").and_then(|v| v.as_str()).unwrap_or("").to_string();
-                            let before = entry_details.get("before").and_then(|v| v.as_bool()).unwrap_or(false);
+                            let after = entry_details.get("after").and_then(|v| v.as_bool()).unwrap_or(false);
                             section_detail.subsections.push(SubsectionDetail {
                                 name: sub_name.as_str().unwrap_or("unknown").to_string(),
                                 file,
                                 edit,
                                 count,
                                 loc,
-                                before,
+                                after,
                             });
                         }
                     }
@@ -74,7 +74,7 @@ fn collect_sections_and_counts(config: &HashMap<String, Value>) -> Vec<SectionDe
                         file: String::new(),
                         edit: String::new(),
                         loc: String::new(),
-                        before: false,
+                        after: false,
                         count: 0,
                     });
                 }
@@ -152,7 +152,7 @@ pub fn find_section_and_edits(
             for subsection in &section.subsections {
                 if subsection.name == addon {
                     if subsection.count > 0 {
-                        edits.push((subsection.file.clone(), subsection.edit.clone(), subsection.loc.clone(), subsection.before.clone()));
+                        edits.push((subsection.file.clone(), subsection.edit.clone(), subsection.loc.clone(), subsection.after.clone()));
                     } else {
                         return Err(Box::new(std::io::Error::new(
                             std::io::ErrorKind::NotFound,

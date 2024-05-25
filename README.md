@@ -30,23 +30,23 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/jbirbal-skydom/Office-Template-Helper">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+<h3 align="center"> Office Template Helper</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    project_description
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/jbirbal-skydom/Office-Template-Helper"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://github.com/jbirbal-skydom/Office-Template-Helper">View Demo</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
+    <a href="https://github.com/jbirbal-skydom/Office-Template-Helper/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/jbirbal-skydom/Office-Template-Helper/issues">Request Feature</a>
   </p>
 </div>
 
@@ -85,35 +85,40 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+Office Template Helper is a versatile desktop application designed to enhance the productivity of Microsoft Office users by enabling the easy integration of add-ons directly into Office files via XML modifications. With a user-friendly graphical interface, Office Template Helper allows users to seamlessly select and inject add-on templates, such as brainstorming aids and cross-functional flowcharts, into existing Office documents.
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+* [![Slint][slint-lang]][Slint-url]
+* [![Rust][rust-lang]][Rust-url]
+* [![C][c-lang]][C-url]
+* [![GCC][gcc-badge]][GCC-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+**Key Features:**
+
+- **Intuitive GUI**: Offers a simple, clean, and easy-to-navigate interface that allows even non-technical users to modify Office files effortlessly.
+- **Add-On Selection**: Users can choose from a list of available add-ons, including specialized templates for brainstorming sessions and detailed flowchart designs.
+- **XML Modification**: Automatically adds the necessary XML line to an Office file to activate the selected add-on, simplifying what would otherwise be a manual and complex process.
+- **Compatibility**: Supports a wide range of Office file formats, ensuring broad usability across different Office applications such as Visio, Word, and Excel.
+- **Efficiency**: Streamlines workflow by integrating add-ons quickly, reducing the time and effort typically required for template setup and customization.
+
+
+**Benefits:**
+
+- **Enhanced Productivity**: Quickly add complex templates to documents, enabling faster preparation and more effective information organization.
+- **Customization**: Offers the flexibility to customize documents with advanced tools, catering to specific project needs and preferences.
+- **Ease of Use**: Removes the technical barriers associated with XML file manipulation, making advanced document customization accessible to all users.
+
+
+**Intended Users:**
+
+OfficeTemplateHelper is ideal for business professionals, project managers, and anyone involved in document preparation who seeks to enhance the functionality of their Office documents with advanced graphical templates and tools.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
 
 
 
@@ -133,12 +138,10 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/jbirbal-skydom/Office-Template-Helper.git
    ```
 3. Install NPM packages
    ```sh
@@ -167,15 +170,60 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+- [x] GUI
+- [ ] Microsoft Products
+  - [ ] Visio
+    - [X] Brainstorm
+    - [ ] Cross-Functional Flowchart
+    - [ ] Timeline
+  - [ ] Excel
+  - [ ] Words
+  - [ ] PowerPoint
+  - [ ] Project
+  - [ ] Outlook
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
+
+___ 
+## Explanation:  
+
+## Understanding the File Structure of Microsoft Office Files
+
+Modern Microsoft Office files, such as those created by Office 2007 and later versions, are built using the Open XML standard. This design choice provides a robust, open, and reusable data format. Below, we explore how these files are structured, particularly focusing on their ZIP and XML components.
+
+### ZIP Format Overview
+
+Office files (.docx, .xlsx, .pptx, etc.) are essentially ZIP archives that contain multiple files and folders. These ZIP archives consolidate various parts of a document into a single, compressed file, making storage and transfer more efficient. When you rename an Office file to have a `.zip` extension and open it with a zip utility, you will see its internal structure.
+
+### Internal XML Structure
+
+Inside the ZIP archive, the content of the file is organized into a series of folders and XML files that describe the document's properties, content, and formatting:
+
+- **`[Content_Types].xml`**: This file defines the types of files contained within the ZIP archive and their corresponding MIME types.
+
+- **`_rels`**: A folder containing `.rels` files, which are relationship files mapping the connections between various parts of the document (like which images are used where).
+
+- **`docProps`**: This folder contains XML files that store properties about the document itself, such as the author, creation date, and modification date (`core.xml`), as well as custom-defined properties (`custom.xml`) and application-specific properties (`app.xml`).
+
+- **`word`, `excel`, `ppt`** (depending on the type of Office file): These directories contain the actual content of the document. For instance, in a Word file (`word`), you will find:
+  - **`document.xml`**: The main document content.
+  - **`styles.xml`**: Definitions of the styles used in the document.
+  - **`settings.xml`**: Document-specific settings like spelling, grammar checks, and compatibility settings.
+  - **`theme`**: Theme information used across the document.
+  - **`media`**: A folder containing embedded media files such as images.
+
+### Advantages of Using ZIP and XML
+
+1. **Compression**: Using ZIP format allows the Office files to be compressed, reducing the file size and making it easier to share and store.
+2. **Modularity and Accessibility**: The use of XML makes data extraction and manipulation straightforward, which can be particularly useful for data analysis and automated report generation.
+3. **Standardization**: XML provides a standard format that can be read by many different types of software, enhancing interoperability.
+
+The combination of ZIP and XML in Office files aligns with modern data handling practices by ensuring that documents are compact, robust, and ready for integration with various data systems.
+
+
+
+___
+
+See the [open issues](https://github.com/jbirbal-skydom/Office-Template-Helper/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -202,7 +250,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the WTFPL License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -211,9 +259,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Jason Birbal - officehelper@skydom.ai
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/jbirbal-skydom/Office-Template-Helper](https://github.com/jbirbal-skydom/Office-Template-Helper)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -222,16 +270,9 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+* [Zip File](https://superuser.com/questions/145479/excel-edit-the-xml-inside-an-xlsx-file)
+* [vsdx python software ](https://github.com/dave-howard/vsdx/)
+* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -239,32 +280,28 @@ Use this space to list resources you find helpful and would like to give credit 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[contributors-shield]: https://img.shields.io/github/contributors/jbirbal-skydom/Office-Template-Helper.svg?style=for-the-badge
+[contributors-url]: https://github.com/jbirbal-skydom/Office-Template-Helper/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/jbirbal-skydom/Office-Template-Helper.svg?style=for-the-badge
+[forks-url]: https://github.com/jbirbal-skydom/Office-Template-Helper/network/members
+[stars-shield]: https://img.shields.io/github/stars/jbirbal-skydom/Office-Template-Helper.svg?style=for-the-badge
+[stars-url]: https://github.com/jbirbal-skydom/Office-Template-Helper/stargazers
+[issues-shield]: https://img.shields.io/github/issues/jbirbal-skydom/Office-Template-Helper.svg?style=for-the-badge
+[issues-url]: https://github.com/jbirbal-skydom/Office-Template-Helper/issues
+[license-shield]: https://img.shields.io/github/license/jbirbal-skydom/Office-Template-Helper.svg?style=for-the-badge
+[license-url]: https://github.com/jbirbal-skydom/Office-Template-Helper/blob/master/LICENSE.txt
 [product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+
+
+ <!-- Badge  -->
+
+[rust-lang]: https://img.shields.io/badge/Rust-f74c00?style=for-the-badge&logo=rust&logoColor=white
+[Rust-url]: https://www.rust-lang.org/
+[c-lang]: https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white
+[C-url]: "https://en.wikipedia.org/wiki/C_(programming_language)"
+[slint-lang]: https://img.shields.io/badge/Slint-7F52FF?style=for-the-badge&logo=slint&logoColor=white
+[Slint-url]: https://slint-ui.com/
+[jabcode-badge]: https://img.shields.io/badge/JABCode-00eded?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDI1IDI1IiB3aWR0aD0iMjUiIGhlaWdodD0iMjUiPgoJPHRpdGxlPmphYmNvZGVfYmFkZ2U8L3RpdGxlPgoJPHN0eWxlPgoJCS5zMCB7IGZpbGw6ICNmZmZmZmYgfSAKCTwvc3R5bGU+Cgk8cGF0aCBpZD0iUGF0aCAwIiBjbGFzcz0iczAiIGQ9Im0wIDE1di0xNWgxNXY1aC0xMHYxMHoiLz4KCTxwYXRoIGlkPSJQYXRoIDAiIGNsYXNzPSJzMCIgZD0ibTYgMTV2LTloOXYzaC02djZ6Ii8+Cgk8cGF0aCBpZD0iUGF0aCAwIiBjbGFzcz0iczAiIGQ9Im0xMCAxNXYtNWg1djV6Ii8+Cgk8cGF0aCBpZD0iUGF0aCAwIiBjbGFzcz0iczAiIGQ9Im0xMCAxNmg2di02aDN2OWgtOXoiLz4KCTxwYXRoIGlkPSJQYXRoIDAiIGNsYXNzPSJzMCIgZD0ibTEwIDIwaDEwdi0xMGg1djE1aC0xNXoiLz4KPC9zdmc+
+[JABCode-url]: https://jabcode.org
+[gcc-badge]: https://img.shields.io/badge/GCC-4E9A06?style=for-the-badge&logo=gnu&logoColor=white
+[GCC-url]: https://gcc.gnu.org/
