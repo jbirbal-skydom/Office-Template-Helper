@@ -28,3 +28,4 @@ Cargo.lock
 # ide settings
 .vscode/*
 test/*
+built/*

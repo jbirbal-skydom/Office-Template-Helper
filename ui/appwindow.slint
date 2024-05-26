@@ -2,7 +2,8 @@ import { GridBox, StandardButton, Button } from "std-widgets.slint";
 import { CheckBox, ComboBox, TextEdit, ScrollView } from "std-widgets.slint";
 
 export component Office inherits Window {
-    in-out property <int> counter: 42;
+    // in-out property <image> logo: @image-url("../assets/logo.svg");
+    in-out property <image> logo: @image-url("../assets/logo.png");
     callback start_prg(string, string, string);
     callback open_dialog();
     callback program_selected(string);
@@ -15,9 +16,11 @@ export component Office inherits Window {
     in-out property <string> file_path: "No file selected";
     in-out property <string> sel_program;
     in-out property <string> sel_addon;
+    in-out property <string> version;
     min-width: 500px;
     min-height: 600px;
-    title: "Example GUI";
+    title: "Office Template Helper";
+    icon: logo;
     VerticalLayout {
         HorizontalLayout {
             alignment: center;
@@ -132,7 +135,7 @@ export component Office inherits Window {
         HorizontalLayout {
             alignment: space-between;
             Text {
-                text: "version: 1.0.0";
+                text: version;
             }
 
             //Text {text: "© 2024";}

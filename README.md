@@ -23,7 +23,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+
 
 
 
@@ -125,32 +125,71 @@ OfficeTemplateHelper is ideal for business professionals, project managers, and 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+All releases are on github on the right tab that says release. Please contribute <3
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+The only dependency was for WSL:
+* Windows
+  * None
+* MacOS
+  *  None 
+* Linux
+  *  None 
+* WSL
+    * Zenity: `sudo apt-get -y install zenity
+`
 
 ### Installation
+* Windows
+  * Download release 
+* MacOS
+  *  Download release 
+* Linux
+  *  Download release 
+* WSL
+  * Dependencies:
+    * Zenity: `sudo apt-get -y install zenity
+`
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+### Build
+To get started with Office Template Helper, follow these steps:
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/jbirbal-skydom/Office-Template-Helper.git
+    ```
+2. Navigate to the project directory:
    ```sh
-   git clone https://github.com/jbirbal-skydom/Office-Template-Helper.git
+   cd Office-Template-Helper
    ```
-3. Install NPM packages
+3. build icon
    ```sh
-   npm install
+   windres app_icon.rc -O coff -o app_icon.res
+
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+4. Build
+   ```sh
+   cargo build
    ```
+   ___
+5. Move `.exe` to root with the following folders
+   1.  `Setting` 
+   2.  `Reference`
+  ___
+
+1. **Cross-Build**
+   1. Host Linux
+      1. Target:
+         1. Windows
+            1. `sudo apt-get install mingw-w64`
+            2. `rustup add x86_64-pc-windows-gnu`
+            3. `cargo build --target x86_64-pc-windows-gnu`
+
+
+
+
+
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -159,28 +198,95 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+To use Office Template Helper, launch the application and follow these steps:
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+1. Open the GUI.
+2. Select the Office file you want to enhance.
+3. Choose a template from the available options.
+4. Apply the template to integrate it into your Office file.
+
+For more detailed instructions, refer to the User Manual.
+
+I've used it with `Visio` but it has the ability to be use with any of the **Office Open XML** ( [OOXML] ) but I mainly built it for `Visio`. This is open sourced and if you want to add an add on on another app look at the `addon.yaml` secion in the settings tab below
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+### Configuring the Application
+
+This application is customizable through the `config.yaml` file located in the application's settings directory. Here are the steps to configure your application:
+
+1. Open the `.yaml` file in a text editor.
+2. Modify the settings as required. 
+3. The `settings` folder has 3 files. 
+   1. `addon.ymal` 
+   2. `valid_files.yaml` 
+   3. `theme.yaml`.
+
+
+#### Add-ons
+
+`addon.yaml`
+This file uses indents for the nesting. each level in intent is a new item and the application uses 3 levels:
+* Application Name
+* Addon Name
+* *Addon Changes* 
+  * Target file
+  * What needs to be edited
+  * Location of the edit
+  * Before of after that location
+
+  The example is below
+    ```yaml
+    visio:
+      EventList:
+        - file: "visio/document.xml" # Path to the brainstorm file
+          edits: > # add EventList element
+            <EventList>
+            </EventList>
+          loc: "VisioDocument"
+          after: false
+    ```
+#### File Format
+
+`valid_files.yaml`
+
+The one-layer nest just point to a reference file to ensure file edit integrity. 
+
+* File extension : file location
+  Example is below
+    ```yaml
+    reference:
+      vsdx: "./reference/visio.vsdx"
+    ```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
 
 - [x] GUI
+  - [X] Windows
+  - [X] Linux
+  - [x] MacOs
+  - [X] WSL
+  - [ ] Theme
 - [ ] Microsoft Products
-  - [ ] Visio
+  - [x] Visio
+    - [x] File Format
     - [X] Brainstorm
-    - [ ] Cross-Functional Flowchart
-    - [ ] Timeline
+    - [X] Cross-Functional Flowchart
+    - [x] Timeline
   - [ ] Excel
+    - [ ] File Format 
   - [ ] Words
+    - [ ] File Format
   - [ ] PowerPoint
+    - [ ] File Format
   - [ ] Project
+    - [ ] File Format
   - [ ] Outlook
+    - [ ] File Format
 
 
 ___ 
@@ -272,7 +378,8 @@ Project Link: [https://github.com/jbirbal-skydom/Office-Template-Helper](https:/
 
 * [Zip File](https://superuser.com/questions/145479/excel-edit-the-xml-inside-an-xlsx-file)
 * [vsdx python software ](https://github.com/dave-howard/vsdx/)
-* []()
+* [OOXML]
+  
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -305,3 +412,6 @@ Project Link: [https://github.com/jbirbal-skydom/Office-Template-Helper](https:/
 [JABCode-url]: https://jabcode.org
 [gcc-badge]: https://img.shields.io/badge/GCC-4E9A06?style=for-the-badge&logo=gnu&logoColor=white
 [GCC-url]: https://gcc.gnu.org/
+
+<!-- links -->
+[OOXML]: (http://officeopenxml.com/)

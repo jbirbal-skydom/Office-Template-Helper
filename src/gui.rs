@@ -5,12 +5,12 @@ use slint::{ModelRc, SharedString};
 mod gui_helper;
 use slint::VecModel;
 use std::error::Error;
+use ui::*;
 
 pub mod ui {
     slint::include_modules!();
 }
 
-use ui::*;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let ui = Office::new().unwrap();
