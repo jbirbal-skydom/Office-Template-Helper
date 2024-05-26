@@ -83,7 +83,11 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://github.com/jbirbal-skydom/Office-Template-Helper)
+<p align="center">
+  <a href="https://github.com/jbirbal-skydom/Office-Template-Helper">
+    <img src="images/screenshot.png" alt="Product Name Screen Shot">
+  </a>
+</p>
 
 Office Template Helper is a versatile desktop application designed to enhance the productivity of Microsoft Office users by enabling the easy integration of add-ons directly into Office files via XML modifications. With a user-friendly graphical interface, Office Template Helper allows users to seamlessly select and inject add-on templates, such as brainstorming aids and cross-functional flowcharts, into existing Office documents.
 
