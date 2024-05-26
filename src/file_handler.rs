@@ -2,10 +2,18 @@
 use std::fs::{self, File};
 use std::io::Read;
 use std::io::{self, Write};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use zip::write::SimpleFileOptions;
 use zip::{ZipArchive, ZipWriter};
+use rand::{distributions::Alphanumeric, Rng};
 
+fn generate_random_path_safe_string(len: usize) -> String {
+    let rng = rand::thread_rng();
+    rng.sample_iter(&Alphanumeric)
+        .take(len)
+        .map(char::from)
+        .collect()
+}
 
 // check file validity and check the file extension and return the file extension and path of the file
 pub fn check_file(file_path: &str) -> (String, String) {
@@ -20,6 +28,37 @@ pub fn change_extension_to_original(file_path: &str, original_ext: &str) -> Stri
     let path = Path::new(file_path);
     let new_path = path.with_extension(original_ext);
     fs::rename(&path, &new_path).expect("Failed to rename file");
+    new_path.to_str().unwrap().to_owned()
+}
+
+pub fn change_extension_to_modified(new_file_path: &str, original_file_path: &str,original_ext: &str) -> String {
+    let path = Path::new(new_file_path);
+    let mut new_path = PathBuf::from(path);
+    let random_string = generate_random_path_safe_string(4);
+    let original_file_name = Path::new(original_file_path)
+        .file_stem()  // This gets the filename without the extension
+        .and_then(|os_str| os_str.to_str())  // Convert OsStr to &str
+        .unwrap_or_default();  // Provide a default empty string if any operation fails    println!(   "original file name: {}", original_file_name);
+    let filename = format!("{}-{}(modified)", original_file_name, random_string);
+    println!("filename: {}", filename);
+
+    // Change the file name to "modified" while preserving the directory structure
+    if let Some(parent) = path.parent() {
+        new_path.set_file_name(filename);
+        new_path.set_extension(original_ext);
+        new_path = parent.join(new_path);
+        println!("new path1: {:?}", new_path);
+    } else {
+        // If there's no parent (e.g., relative path without directories), just modify the name and extension
+        new_path.set_file_name(filename);
+        new_path.set_extension(original_ext);
+        println!("new path2: {:?}", new_path)
+    }
+
+    // Perform the file renaming
+    fs::rename(&path, &new_path).expect("Failed to rename file");
+
+    // Return the new path as a String
     new_path.to_str().unwrap().to_owned()
 }
 
@@ -91,8 +130,9 @@ pub fn write_content_to_zip(source: &String, target_file: &str, modify: &String)
 // the only argument will be the file location and the return will be the new file location
 pub fn copy_zip(file_path: &str) -> io::Result<String> {
     let path = Path::new(file_path).canonicalize()?;
-
-    let new_path = path.with_file_name("modified.zip");
+    let random_string = generate_random_path_safe_string(10);
+    let filename = random_string + ".zip";
+    let new_path = path.with_file_name(filename);
     fs::copy(&path, &new_path)?;
     Ok(new_path.to_str().unwrap().to_owned())
 }

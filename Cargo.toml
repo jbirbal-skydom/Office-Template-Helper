@@ -27,6 +27,7 @@ serde_yaml = "0.9.34"
 clap = "4.5.4"
 rfd = "0.14.0"
 ctrlc = "3.2.1"
+rand = "0.8.4"
 
 [build-dependencies]
 slint-build = "1.5"

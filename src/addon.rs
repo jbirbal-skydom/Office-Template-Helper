@@ -5,11 +5,13 @@ use std::error::Error;
 use std::fs::File;
 
 // Define a structure to hold the overall section details
+#[derive(Clone)] // This line will auto-implement the Clone trait
 pub struct SectionDetail {
     pub name: String,
     pub subsections: Vec<SubsectionDetail>,
 }
 // Define a structure to hold the details of each subsection
+#[derive(Clone)] // This line will auto-implement the Clone trait
 pub struct SubsectionDetail {
     pub name: String,
     pub file: String,

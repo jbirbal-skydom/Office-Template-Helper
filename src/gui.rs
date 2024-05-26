@@ -39,6 +39,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     // set the addon combo box
     // wait for selection from program then populate the addon accordingly
+    let section_details_clone = sections_details.clone();
     ui.on_program_selected({
         let ui_handle = ui.as_weak().clone();
         move |program| {
@@ -46,7 +47,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             let ui = ui_handle.upgrade().unwrap();
             let selected_program = program.as_str();
             let addons = addon::print_sections(
-                &sections_details,
+                &section_details_clone,
                 "subsection",
                 Some(selected_program),
                 false,
@@ -79,7 +80,6 @@ fn main() -> Result<(), Box<dyn Error>> {
                 ui.set_file_path(SharedString::from(
                     path.to_str().unwrap_or("Error reading path"),
                 ));
-                println!("File selected: {}", path.display());
                 let new_message = format!("File selected: {}", path.display());
                 gui_helper::append_to_output_text(&ui, &new_message)
                 // ui.set_output_text(SharedString::from(format!("File selected: {}", path.display()))); // Convert String to SharedString
@@ -87,9 +87,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     });
 
-    // this is to start the process 
+    // this is to start the process
     // it will be assigned the start_prg callback and call the gui_helper::start function
     // the start function will take in the ui, file path, program name, and the addon name that will be  mapped into the callback
+    let section_details_clone = sections_details.clone();
     ui.on_start_prg({
         let ui_handle = ui.as_weak().clone();
         move |file, pro, add| {
@@ -97,14 +98,14 @@ fn main() -> Result<(), Box<dyn Error>> {
             let file_path = file.as_str();
             let program = pro.as_str();
             let addon = add.as_str();
-            println!("Starting process with file: {}, program: {}, addon: {}", file_path, program, addon);
-            let new_message = format!("Starting process with file: {}, program: {}, addon: {}", file_path, program, addon);
+            let new_message = format!(
+                "Starting process with file: {}, program: {}, addon: {}",
+                file_path, program, addon
+            );
             gui_helper::append_to_output_text(&ui, &new_message);
-            let _ = gui_helper::start(&ui, file_path, program, addon);
+            let _ = gui_helper::start(&ui, file_path, program, addon, &section_details_clone);
         }
     });
-
-
 
     // gui_helper::start(&ui, file_path, program, addon);
 
