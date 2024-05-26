@@ -3,13 +3,21 @@ import { CheckBox, ComboBox, TextEdit, ScrollView } from "std-widgets.slint";
 
 export component Office inherits Window {
     in-out property <int> counter: 42;
-    callback request-increase-value();
+    callback start_prg(string, string, string);
     callback open_dialog();
-    in-out property <string> file_path: "No file selected";
+    callback program_selected(string);
+    callback addon_selected(string);
+    in property <[string]> programs;
+    in-out property <bool> programs-enabled: false;
+    in property <[string]> addons;
+    in-out property <bool> start-enabled: false;
     in-out property <string> output_text: "If the add-on does not work: \n    Please select the program and select initialize.";
+    in-out property <string> file_path: "No file selected";
+    in-out property <string> sel_program;
+    in-out property <string> sel_addon;
 
     min-width: 500px;
-    min-height: 400px;
+    min-height: 600px;
     title: "Example GUI";
     VerticalLayout {
         HorizontalLayout {
@@ -29,11 +37,12 @@ export component Office inherits Window {
                 text: "Open File";
                 clicked => {
                     root.open_dialog();
-                    }
+                }
             }
 
             Text {
-                    text: file_path;
+                text: file_path;
+                // checked: false;
             }
         }
 
@@ -78,13 +87,24 @@ export component Office inherits Window {
             height: 10%;
             GridBox {
                 ComboBox {
-                    enabled: false;
-                    model: ["Program", "Option 2", "Option 3"];
+                    enabled: true;
+                    model: programs;
+                    current-value: programs[0];
+                    selected(selected) => {
+                        root.program_selected(selected);
+                        root.programs-enabled = true;
+                        root.sel_program = selected;
+                    }
                 }
 
                 ComboBox {
-                    enabled: false;
-                    model: ["Choice A", "Choice B", "Choice C"];
+                    enabled: programs-enabled;
+                    model: addons;
+                    selected(addon_selected) => {
+                        root.addon_selected(addon_selected);
+                        root.start-enabled = true;
+                        root.sel_addon = addon_selected;
+                    }
                 }
             }
         }
@@ -99,7 +119,7 @@ export component Office inherits Window {
                 // center the text editor
                 
                 ScrollView {
-                    padding-top: 10px;
+                padding-top: 10px;
                 TextEdit {
                     min-width: 490px;
                     min-height: 150px;
@@ -123,8 +143,9 @@ export component Office inherits Window {
                 width: 40%;
                 //height: 20px;
                 text: "Start";
+                enabled: start-enabled;
                 clicked => {
-                    request-increase-value();
+                    start_prg(file_path, sel_program, sel_addon);
                 }
             }
 
@@ -133,11 +154,17 @@ export component Office inherits Window {
                 checked: false;
             }
         }
+
         HorizontalLayout {
             alignment: space-between;
-            Text {text: "version: 1.0.0";}
+            Text {
+                text: "version: 1.0.0";
+            }
+
             //Text {text: "© 2024";}
-            Text {text: "Made with Slint";}
+            Text {
+                text: "Made with Slint";
+            }
         }
 
         // HorizontalLayout {

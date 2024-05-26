@@ -7,7 +7,7 @@ visio:
         </EventList>
       loc: "VisioDocument"
       after: false
-  brainstorm:
+  Brainstorm:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: > # add EventItem element
         <EventItem ID='0' EventCode='1' Action='1' Enabled='1' Target='BRAINSTORM' TargetArgs='/cmd=DocCreated'/>
@@ -20,7 +20,7 @@ visio:
       loc: "EventList"
       after: false
 
-  cff:
+  Cross-Functional:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: >
         <EventItem ID='48' EventCode='1' Action='1' Enabled='1' Target='CFF14' TargetArgs='/cmd=1'/>
@@ -33,7 +33,7 @@ visio:
       loc: "EventList"
       after: false
 
-  ts:
+  Timeline:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: >
         <EventItem ID='15' EventCode='1' Action='1' Enabled='1' Target='ts' TargetArgs='/cmd=22'/>
@@ -56,18 +56,22 @@ visio:
     #   loc: "magazine"
     #   after: false
 words:
-  xxx:
-    - file: "outer.xml" # Path to the cff file
-      edits: "<element6>Value 6</element6>" # Edits Fto apply
-      loc: "element2"
+  EventList:
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: > # add EventList element
+        <EventList>
+        </EventList>
+      loc: "VisioDocument"
       after: false
 
 excel:
-  brainstorm:
-    - file: "outer.xml" # Path to the excel file
-      edits: "<element6>Value 6</element6>" # Edits to apply
-      loc: "element2"
-      before: false
+  EventList:
+    - file: "visio/document.xml" # Path to the brainstorm file
+      edits: > # add EventList element
+        <EventList>
+        </EventList>
+      loc: "VisioDocument"
+      after: false
 
 access: {}
 
@@ -76,7 +80,5 @@ powerpoint: {}
 onenote: {}
 
 publisher: {}
-
-windows: {}
 
 project: {}

@@ -52,7 +52,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("Add-ons initialized.");
 
     // If initialization is successful, process the sections
-    let _ = addon::print_sections(&sections_details, "subsection", Some("visio"), true)?;
+    let _ = addon::print_sections(&sections_details, "all", None, true)?;
     // for section in &sections_details {
     //     print!("{}: ", section.name);
     //     for subsection in &section.subsections {
