@@ -14,6 +14,8 @@ pub mod ui {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let ui = Office::new().unwrap();
+    // set the version of the app
+    ui.set_version(SharedString::from(env!("CARGO_PKG_VERSION")));
 
     // initalize the add-ons
     let (sections_details, _ext) = match addon::initialize_addons() {
