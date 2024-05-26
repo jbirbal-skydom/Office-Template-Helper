@@ -15,7 +15,6 @@ export component Office inherits Window {
     in-out property <string> file_path: "No file selected";
     in-out property <string> sel_program;
     in-out property <string> sel_addon;
-
     min-width: 500px;
     min-height: 600px;
     title: "Example GUI";
@@ -45,25 +44,6 @@ export component Office inherits Window {
                 // checked: false;
             }
         }
-
-        // init := HorizontalLayout {
-        //     alignment: center;
-        //     // This will center the child widget horizontally
-        //         Button {
-        //         width: 80%;
-        //         height: 20px;
-        //         text: "Initalize";
-        //         clicked => {
-        //             // FileDialog::open_single_file("Select a file", "", |file_path| {
-        //             //     if let Some(path) = file_path {
-        //             //         file_path_text.text = path;
-        //             //     } else {
-        //                 //         file_path_text.text = "No file selected";
-        //                 //     }
-        //                 // });
-        //             }
-        //     }
-        // }
 
         labeled := HorizontalLayout {
             padding-bottom: 0px;
@@ -112,20 +92,13 @@ export component Office inherits Window {
         logger := HorizontalLayout {
             padding-top: 10px;
             //width: 100%;
-            
-                //alignment: center; // This will center the child widget horizontally
-
-
-                // center the text editor
-                
                 ScrollView {
                 padding-top: 10px;
                 TextEdit {
                     min-width: 490px;
                     min-height: 150px;
                     text: output_text;
-                    // Since the TextEdit is the only child inside the ScrollView, it will fill the ScrollView's size
-                    }
+                }
             }
         }
 
@@ -166,31 +139,5 @@ export component Office inherits Window {
                 text: "Made with Slint";
             }
         }
-
-        // HorizontalLayout {
-        //     //padding-right: 30px;
-        //         GridBox {
-        //         StandardButton {
-        //             kind: ok;
-        //             clicked => {
-        //                 request-increase-value();
-        //             }
-        //         }
-
-        //         StandardButton {
-        //             kind: close;
-        //             clicked => {
-        //                 request-increase-value();
-        //             }
-        //         }
-
-        //         StandardButton {
-        //             kind: reset;
-        //             clicked => {
-        //                 request-increase-value();
-        //             }
-        //         }
-        //     }
-        // }
     }
 }
