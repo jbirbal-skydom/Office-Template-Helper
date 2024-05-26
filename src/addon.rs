@@ -16,9 +16,8 @@ pub struct SubsectionDetail {
     pub edit: String,
     pub count: usize,
     pub loc: String,
-    pub after: bool
+    pub after: bool,
 }
-
 
 fn load_config(file_path: &str) -> Result<HashMap<String, Value>, Box<dyn Error>> {
     println!("Loading configuration from: {}", file_path);
@@ -53,10 +52,25 @@ fn collect_sections_and_counts(config: &HashMap<String, Value>) -> Vec<SectionDe
                     let count = entries.len(); // Correct counting here
                     for entry in entries {
                         if let Value::Mapping(entry_details) = entry {
-                            let file = entry_details.get("file").and_then(|v| v.as_str()).unwrap_or("").to_string();
-                            let edit = entry_details.get("edits").and_then(|v| v.as_str()).unwrap_or("").to_string();
-                            let loc = entry_details.get("loc").and_then(|v| v.as_str()).unwrap_or("").to_string();
-                            let after = entry_details.get("after").and_then(|v| v.as_bool()).unwrap_or(false);
+                            let file = entry_details
+                                .get("file")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("")
+                                .to_string();
+                            let edit = entry_details
+                                .get("edits")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("")
+                                .to_string();
+                            let loc = entry_details
+                                .get("loc")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("")
+                                .to_string();
+                            let after = entry_details
+                                .get("after")
+                                .and_then(|v| v.as_bool())
+                                .unwrap_or(false);
                             section_detail.subsections.push(SubsectionDetail {
                                 name: sub_name.as_str().unwrap_or("unknown").to_string(),
                                 file,
@@ -138,7 +152,7 @@ pub fn find_reference_zip(ext: &str) -> Result<String, Box<dyn Error>> {
 
 // find the section and the amount of edits and which file to edit
 // the function will take in the zip path,the add-on name, and the section_details( this will be a struct with the the inner file path and the edit)
-// will return a a vector of the file: edit 
+// will return a a vector of the file: edit
 pub fn find_section_and_edits(
     program: &str,
     addon: &str,
@@ -152,7 +166,12 @@ pub fn find_section_and_edits(
             for subsection in &section.subsections {
                 if subsection.name == addon {
                     if subsection.count > 0 {
-                        edits.push((subsection.file.clone(), subsection.edit.clone(), subsection.loc.clone(), subsection.after.clone()));
+                        edits.push((
+                            subsection.file.clone(),
+                            subsection.edit.clone(),
+                            subsection.loc.clone(),
+                            subsection.after.clone(),
+                        ));
                     } else {
                         return Err(Box::new(std::io::Error::new(
                             std::io::ErrorKind::NotFound,
@@ -181,4 +200,73 @@ pub fn find_section_and_edits(
     )))
 }
 
+//return the sections and subsections
+pub fn print_sections(
+    sections_details: &[SectionDetail],
+    req_type: &str,
+    needed_section: Option<&str>,
+    print: bool,
+) -> Result<Vec<String>, Box<dyn Error>> {
+    let mut message = Vec::new();
+    match req_type {
+        "section" => {
+            for section in sections_details {
+                if print {
+                    println!("{}: ", section.name);
+                }
+                message.push(section.name.clone());
+            }
+            Ok(message)
+        }
+        "subsection" => {
+            if let Some(needed) = needed_section {
+                let mut prev_subsection_name: Option<String> = None;
+                for section in sections_details {
+                    if &section.name == needed {
+                        for subsection in &section.subsections {
+                            if prev_subsection_name.as_ref() != Some(&subsection.name) {
+                                if print {
+                                    println!("- {} ({})", subsection.name, subsection.count);
+                                }
+                                message.push(subsection.name.clone());
+                                prev_subsection_name = Some(subsection.name.clone()); // Update the previous subsection name
 
+                            }
+                        }
+                    }
+                }
+            }
+            Ok(message)
+        }
+        "all" => {
+            for section in sections_details {
+                if print {
+                    println!("{}: ", section.name); // Ensure each section name is printed
+                }
+                message.push(section.name.clone());
+
+                let mut prev_subsection_name: Option<String> = None;
+
+                for subsection in &section.subsections {
+                    if prev_subsection_name.as_ref() != Some(&subsection.name) {
+                        if print {
+                            println!("- {} ({})", subsection.name, subsection.count);
+                        }
+                        message.push(format!("- {} ({})", subsection.name, subsection.count));
+                        prev_subsection_name = Some(subsection.name.clone()); // Update the previous subsection name
+                    }
+                }
+                if print {
+                    println!(); // End the line after listing subsections
+                }
+            }
+            Ok(message)
+        }
+        _ => {
+            return Err(Box::new(std::io::Error::new(
+                std::io::ErrorKind::NotFound,
+                format!("Type not found: {}", req_type),
+            )));
+        }
+    }
+}

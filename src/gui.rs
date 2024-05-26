@@ -5,6 +5,7 @@ mod arguments;
 mod modify;
 use slint::SharedString;
 mod gui_helper;
+use std::error::Error;
 
 pub mod ui {
     slint::include_modules!();
@@ -12,12 +13,36 @@ pub mod ui {
 
 use ui::*;
 
-fn main() -> Result<(), slint::PlatformError> {
-    // let matches = App::new("slint")
-    //     .version("0.1.0")
-    //     .author("Your Name <
-    let ui = Office::new()?;
+fn main() -> Result<(), Box<dyn Error>> {
+    let ui = Office::new().unwrap();
 
+
+    // initalize the add-ons
+    let (sections_details, _ext) = match addon::initialize_addons() {
+        Ok(data) => data,
+        Err(e) => {
+            // Log the error and exit if the initialization fails
+            let new_message = format!("Failed to initialize add-ons: {:?}", e);
+            gui_helper::append_to_output_text(&ui, new_message);
+            return Err(e);
+        }
+    };
+
+    let new_message = format!("Add-ons initialized.");
+    gui_helper::append_to_output_text(&ui, new_message);
+
+    // If initialization is successful, process the sections
+    for section in &sections_details {
+        let new_message = format!("{}: ", section.name);
+        gui_helper::append_to_output_text(&ui, new_message);
+        for subsection in &section.subsections {
+            let new_message = format!("- {} ({})", subsection.name, subsection.count);
+            gui_helper::append_to_output_text(&ui, new_message);
+        }
+        //println!(); // End the line after listing subsections
+    }
+
+    gui_helper::append_to_output_text(&ui, String::from("_____________get file_______________"));
     ui.on_open_dialog({
         let ui_handle = ui.as_weak().clone();  // Clone the UI handle to move into the closure
         move || {
@@ -39,5 +64,6 @@ fn main() -> Result<(), slint::PlatformError> {
         }
     });
 
-    ui.run()
+    ui.run().unwrap();
+    Ok(())
 }

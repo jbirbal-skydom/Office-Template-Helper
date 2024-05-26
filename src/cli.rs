@@ -7,7 +7,9 @@ mod arguments;
 mod file_handler; // Ensure the file name matches the module name, consider renaming it to file_handler.rs to follow Rust conventions
 mod modify;
 
+
 fn main() -> Result<(), Box<dyn Error>> {
+    
     println!(
         "
      ____  _                _     _____ _           _ _     _             
@@ -45,13 +47,17 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("Add-ons initialized.");
 
     // If initialization is successful, process the sections
-    for section in &sections_details {
-        print!("{}: ", section.name);
-        for subsection in &section.subsections {
-            print!("- {} ({})", subsection.name, subsection.count);
-        }
-        println!(); // End the line after listing subsections
-    }
+    let _ = addon::print_sections(&sections_details, "subsection", Some("visio"), true)?;
+    // for section in &sections_details {
+    //     print!("{}: ", section.name);
+    //     for subsection in &section.subsections {
+    //         if subsection.count > 1 {
+    //             continue; // Skip this subsection because its count is greater than 1, suggesting it's a duplicate or should be ignored
+    //         }
+    //         print!("- {} ({})", subsection.name, subsection.count);
+    //     }
+    //     println!(); // End the line after listing subsections
+    // }
 
     println!("_____________get file_______________");
 
@@ -119,12 +125,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         let file_content = file_handler::read_zip_file_content(&new_file, &inner_path)?;
         let file_content_str = std::str::from_utf8(&file_content)?.to_string(); // Convert &str to String
         let mut formatted = modify::prettify_xml(&file_content_str)?;
-        println!("file content: {}", formatted);
+        // println!("file content: {}", formatted);
         println!("-------");
         let res = modify::modify_xml(&file_content_str, &changes, &location, after)?; // Pass String as reference
                                                                                       //if okay the print the result
         formatted = modify::prettify_xml(&res)?;
-        println!("formatted: {}", formatted);
+        //println!("formatted: {}", formatted);
         println!("____________________________");
         println!(
             "writing the content to the zip file: {} - {}",
@@ -139,13 +145,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("Changed extension back to original: {}", original_filetype);
     println!("_________________________");
 
-    println!(" Operation completed.");
+    println!(" Operation completed. Press `Enter` to exit");
 
-    // Wait specifically for the Enter key
-    let stdin = io::stdin();
-    let mut iterator = stdin.lock().lines();
-    iterator.next().unwrap().unwrap(); // Read one line, which includes the newline character
 
-    arguments::end_of_program();
+    let _ = arguments::end_of_program();
     Ok(()) // Explicitly return Ok(()) to signify successful execution
 }
