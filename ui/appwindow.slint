@@ -9,7 +9,7 @@ export component Office inherits Window {
     callback addon_selected(string);
     in property <[string]> programs;
     in-out property <bool> programs-enabled: false;
-    in property <[string]> addons;
+    in-out property <[string]> addons;
     in-out property <bool> start-enabled: false;
     in-out property <string> output_text: "If the add-on does not work: \n    Please select the program and select initialize.";
     in-out property <string> file_path: "No file selected";
@@ -67,10 +67,11 @@ export component Office inherits Window {
             height: 10%;
             GridBox {
                 ComboBox {
-                    enabled: true;
                     model: programs;
+                    enabled: true;
                     current-value: programs[0];
                     selected(selected) => {
+                        root.addons = ["None"];
                         root.program_selected(selected);
                         root.programs-enabled = true;
                         root.sel_program = selected;
@@ -78,8 +79,8 @@ export component Office inherits Window {
                 }
 
                 ComboBox {
-                    enabled: programs-enabled;
                     model: addons;
+                    enabled: programs-enabled;
                     selected(addon_selected) => {
                         root.addon_selected(addon_selected);
                         root.start-enabled = true;
