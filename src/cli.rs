@@ -1,11 +1,16 @@
 // slint::include_modules!();
 use std::error::Error;
-use std::io::{self, BufRead};
+// use std::io::{self, BufRead};
+extern crate office_template_helper;
+use office_template_helper::addon;
+use office_template_helper::arguments;
+use office_template_helper::file_handler;
+use office_template_helper::modify;
 
-mod addon;
-mod arguments;
-mod file_handler; // Ensure the file name matches the module name, consider renaming it to file_handler.rs to follow Rust conventions
-mod modify;
+// mod addon;
+// mod arguments;
+// mod file_handler; // Ensure the file name matches the module name, consider renaming it to file_handler.rs to follow Rust conventions
+// mod modify;
 
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -125,12 +130,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         let file_content = file_handler::read_zip_file_content(&new_file, &inner_path)?;
         let file_content_str = std::str::from_utf8(&file_content)?.to_string(); // Convert &str to String
         let mut formatted = modify::prettify_xml(&file_content_str)?;
-        // println!("file content: {}", formatted);
+        println!("file content: {}", formatted);
         println!("-------");
         let res = modify::modify_xml(&file_content_str, &changes, &location, after)?; // Pass String as reference
                                                                                       //if okay the print the result
         formatted = modify::prettify_xml(&res)?;
-        //println!("formatted: {}", formatted);
+        println!("formatted: {}", formatted);
         println!("____________________________");
         println!(
             "writing the content to the zip file: {} - {}",

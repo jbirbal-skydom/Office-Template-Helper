@@ -4,13 +4,16 @@ version = "0.1.0"
 edition = "2021"
 build = "build.rs"
 
+[lib]
+path = "src/lib.rs"
+
 [[bin]]
 name = "office-template-helper-CLI"
 path = "src/cli.rs"
 
-# [[bin]]
-# name = "office-template-helper-GUI"
-# path = "src/gui.rs"
+[[bin]]
+name = "office-template-helper-GUI"
+path = "src/gui.rs"
 
 
 [dependencies]
@@ -23,7 +26,6 @@ toml = "0.8.13"
 serde_yaml = "0.9.34"
 clap = "4.5.4"
 rfd = "0.14.0"
-tokio = { version = "1.0", features = ["full"] }
 ctrlc = "3.2.1"
 
 [build-dependencies]

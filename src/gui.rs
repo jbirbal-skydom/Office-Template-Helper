@@ -1,8 +1,10 @@
 
-mod file_handler;
-mod addon;
-mod arguments;
-mod modify;
+extern crate office_template_helper;
+use office_template_helper::addon;
+// use office_template_helper::arguments;
+// use office_template_helper::file_handler;
+// use office_template_helper::modify;
+
 use slint::SharedString;
 mod gui_helper;
 use std::error::Error;
