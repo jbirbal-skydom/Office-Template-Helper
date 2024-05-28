@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+# Define the target directory
+TARGET_DIR="$HOME/office-template-helper"
+
+# Check if the directory exists and remove it
+if [ -d "$TARGET_DIR" ]; then
+    echo "Removing Office Template Helper settings from $TARGET_DIR"
+    rm -rf "$TARGET_DIR"
+fi
+
+exit 0

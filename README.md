@@ -220,55 +220,69 @@ I've used it with `Visio` but it has the ability to be use with any of the **Off
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-### Configuring the Application
-
-This application is customizable through the `config.yaml` file located in the application's settings directory. Here are the steps to configure your application:
-
-1. Open the `.yaml` file in a text editor.
-2. Modify the settings as required. 
-3. The `settings` folder has 3 files. 
-   1. `addon.ymal` 
-   2. `valid_files.yaml` 
-   3. `theme.yaml`.
 
 
-#### Add-ons
+  ### Configuring the Application
 
-`addon.yaml`
-This file uses indents for the nesting. each level in intent is a new item and the application uses 3 levels:
-* Application Name
-* Addon Name
-* *Addon Changes* 
-  * Target file
-  * What needs to be edited
-  * Location of the edit
-  * Before of after that location
+  This application is customizable through configuration files located in the user-specific configuration directory. Here are the platform-specific paths where these files are located:
 
-  The example is below
-    ```yaml
-    visio:
-      EventList:
-        - file: "visio/document.xml" # Path to the brainstorm file
-          edits: > # add EventList element
-            <EventList>
-            </EventList>
-          loc: "VisioDocument"
-          after: false
-    ```
-#### File Format
+  | **Platform** | **Configuration Directory**               | **Example Path**                                 |
+  |--------------|------------------------------------------|--------------------------------------------------|
+  | **Linux**    | `$XDG_CONFIG_HOME` or `$HOME/.config`    | `/home/alice/.config`                            |
+  | **macOS**    | `$HOME/Library/Application Support`      | `/Users/Alice/Library/Application Support`       |
+  | **Windows**  | `{FOLDERID_LocalAppData}`                | `C:\Users\Alice\AppData\Local`                   |
 
-`valid_files.yaml`
+  ### Editing Configuration Files
 
-The one-layer nest just point to a reference file to ensure file edit integrity. 
+  Navigate to the configuration directory appropriate for your platform and modify the `.yaml` files using a text editor. The primary configuration files are:
 
-* File extension : file location
-  Example is below
-    ```yaml
-    reference:
-      vsdx: "./reference/visio.vsdx"
-    ```
+  1. `addon.yaml` - Manages add-on configurations.
+  2. `valid_files.yaml` - Maps file extensions to reference files for integrity checks.
+  3. `theme.yaml` - Handles theming and UI customizations.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+  #### Add-on Configurations
+
+  `addon.yaml` organizes data with nested structures to define how add-ons interact with the application:
+
+  ```yaml
+  visio:
+    EventList:
+      - file: "visio/document.xml"  # Path to the brainstorm file
+        edits: >  # Add EventList element
+          <EventList>
+          </EventList>
+        loc: "VisioDocument"
+        after: false
+  ```
+
+  - **Levels of Indentation**: Each level represents a new scope within the configuration:
+    - **Application Name**
+    - **Addon Name**
+    - **Addon Changes**: Specifies the target file, the modifications to be made, and their location within the file.
+
+  #### File Format Settings
+
+  `valid_files.yaml` provides a straightforward mapping of file extensions to their reference paths, ensuring the application maintains integrity during file edits:
+
+  ```yaml
+  reference:
+    vsdx: "reference/visio.vsdx"
+  ```
+
+  - **One-layer Nest**: Each entry maps a file extension to a reference file path used by the application.
+
+  ### Steps to Modify Settings
+
+  1. Open the configuration file you need to edit, such as `addon.yaml` or `valid_files.yaml`.
+  2. Make the necessary changes based on the examples provided.
+  3. Save the changes and restart the application if necessary to apply the new settings.
+
+  <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+
+
 
 <!-- ROADMAP -->
 ## Roadmap

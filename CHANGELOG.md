@@ -6,12 +6,11 @@ Previous settings location will disrupt and break with this change
 ### Added or Changed
 - Move the settings to a more accessible location 
 
-| Platform | Value                | Example          |
-| -------- | -------------------- | ---------------- |
-| Linux    | `$HOME`              | /home/alice/office-template-helper      |
-| macOS    | `$HOME`              | /Users/Alice/office-template-helper     |
-| Windows  | `{FOLDERID_Profile}` | C:\\Users\\Alice\\office-template-helper |
-
+  | **Platform** | **Configuration Directory**               | **Example Path**                                 |
+  |--------------|------------------------------------------|--------------------------------------------------|
+  | **Linux**    | `$XDG_CONFIG_HOME` or `$HOME/.config`    | `/home/alice/.config`                            |
+  | **macOS**    | `$HOME/Library/Application Support`      | `/Users/Alice/Library/Application Support`       |
+  | **Windows**  | `{FOLDERID_LocalAppData}`                | `C:\Users\Alice\AppData\Local`                   |
 
 - Prevent reopening of reference file (valid_file.yaml)
 

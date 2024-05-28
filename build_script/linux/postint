@@ -1,0 +1,22 @@
+#!/bin/sh
+set -e
+
+# Target directory
+TARGET_DIR="$HOME/office-template-helper"
+
+# Create target directory if it does not exist
+mkdir -p "$TARGET_DIR"
+
+# Permissions might need to be adjusted depending on the use case
+chown -R $USER:$USER "$TARGET_DIR"
+chmod -R 755 "$TARGET_DIR"
+
+# Copying files and directories
+cp -r /usr/share/office-template-helper/reference "$TARGET_DIR/"
+cp -r /usr/share/office-template-helper/settings "$TARGET_DIR/"
+
+# Handling icons might need special care
+# Assuming icons are stored in /usr/share/office-template-helper/icons
+cp -r /usr/share/office-template-helper/icons "$TARGET_DIR/"
+
+exit 0
