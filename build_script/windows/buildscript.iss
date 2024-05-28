@@ -10,7 +10,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={D6EABF43-5BCB-46E5-B790-C169911F5994}
+AppId={{D6EABF43-5BCB-46E5-B790-C169911F5994}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -18,11 +18,11 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={autopf}\Office-Template-Helper
+DefaultDirName={pf}\Office-Template-Helper
 DisableProgramGroupPage=yes
 LicenseFile=D:\Coding\git\Office-Template-Helper\LICENSE.txt
 ; Remove the following line to run in administrative install mode (install for all users.)
-PrivilegesRequired=lowest
+PrivilegesRequired=admin  
 PrivilegesRequiredOverridesAllowed=commandline
 OutputDir=D:\Coding\git\Office-Template-Helper\built\windows
 OutputBaseFilename=office-template-helper
@@ -40,8 +40,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "D:\Coding\git\Office-Template-Helper\target\x86_64-pc-windows-gnu\release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\Coding\git\Office-Template-Helper\target\x86_64-pc-windows-gnu\release\office-template-helper-CLI.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\Coding\git\Office-Template-Helper\settings\*"; DestDir: "{%USERPROFILE}\office-template-helper\settings"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\Coding\git\Office-Template-Helper\reference\*"; DestDir: "{%USERPROFILE}\office-template-helper\reference"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\Coding\git\Office-Template-Helper\settings\*"; DestDir: "{localappdata}\office-template-helper\settings"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\Coding\git\Office-Template-Helper\reference\*"; DestDir: "{localappdata}\office-template-helper\reference"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
