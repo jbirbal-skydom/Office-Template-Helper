@@ -1,5 +1,5 @@
 # Main configuration for Visio add-ons
-visio:
+Visio:
   EventList:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: > # add EventList element
@@ -55,7 +55,7 @@ visio:
     #   edits: "<element7>Value 7</element7>" # Edits to apply
     #   loc: "magazine"
     #   after: false
-words:
+Words:
   EventList:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: > # add EventList element
@@ -64,7 +64,7 @@ words:
       loc: "VisioDocument"
       after: false
 
-excel:
+Excel:
   EventList:
     - file: "visio/document.xml" # Path to the brainstorm file
       edits: > # add EventList element
@@ -73,12 +73,12 @@ excel:
       loc: "VisioDocument"
       after: false
 
-access: {}
+Access: {}
 
-powerpoint: {}
+Powerpoint: {}
 
-onenote: {}
+Onenote: {}
 
-publisher: {}
+Publisher: {}
 
-project: {}
+Project: {}

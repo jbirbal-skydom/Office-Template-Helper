@@ -3,7 +3,9 @@ use office_template_helper::addon;
 use office_template_helper::addon::SectionDetail;
 use office_template_helper::file_handler;
 use office_template_helper::modify;
+use serde_yaml::Value;
 use slint::SharedString;
+use std::collections::HashMap;
 use std::path::PathBuf;
 
 // use slint::*;
@@ -38,7 +40,7 @@ fn get_file_name_and_extension(file_path: &str) -> (String, String) {
 }
 
 //copy the file and verify the file, i need the file path and it will return the new file path
-fn copy_and_verify_file(file_path: &str, ext: &str) -> String {
+fn copy_and_verify_file(file_path: &str, ext: &str, ref_ext: &HashMap<String, Value>) -> String {
     //copy the zip file to a new file
     let new_file = file_handler::copy_zip(&file_path).unwrap();
     println!("new file path: {}", new_file);
@@ -55,7 +57,7 @@ fn copy_and_verify_file(file_path: &str, ext: &str) -> String {
     }
 
     // Compare the file paths of the original zip file with the ref zip file
-    match addon::find_reference_zip(&ext) {
+    match addon::find_reference_zip(&ext, ref_ext) {
         Ok(ref_zip) => {
             // Open zip and read all file paths
             let ref_entries = file_handler::open_zip(&ref_zip, false).unwrap();
@@ -83,6 +85,7 @@ pub fn start(
     program: &str,
     addon: &str,
     sections_details: &Vec<SectionDetail>,
+    ref_ext: &HashMap<String, Value>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     println!(
         " the arguemtns are: file: {}, program: {}, addon: {}",
@@ -95,7 +98,7 @@ pub fn start(
         format!("file path {}, has the File extension: {}", file, ext).as_str(),
     );
     append_to_output_text(&ui, "_____________Copy and verify file_______________");
-    let new_file = copy_and_verify_file(file_path, &ext);
+    let new_file = copy_and_verify_file(file_path, &ext, &ref_ext);
     append_to_output_text(&ui, format!("new file path: {}", new_file).as_str());
 
     append_to_output_text(&ui, "_____________Get edits_______________");

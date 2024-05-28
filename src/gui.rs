@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     ui.set_version(SharedString::from(env!("CARGO_PKG_VERSION")));
 
     // initalize the add-ons
-    let (sections_details, _ext) = match addon::initialize_addons() {
+    let (sections_details, ref_ext) = match addon::initialize_addons() {
         Ok(data) => data,
         Err(e) => {
             // Log the error and exit if the initialization fails
@@ -105,7 +105,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 file_path, program, addon
             );
             gui_helper::append_to_output_text(&ui, &new_message);
-            let _ = gui_helper::start(&ui, file_path, program, addon, &section_details_clone);
+            let _ = gui_helper::start(&ui, file_path, program, addon, &section_details_clone, &ref_ext);
         }
     });
 

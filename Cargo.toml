@@ -25,6 +25,7 @@ clap = "4.5.4"
 rfd = "0.14.0"
 ctrlc = "3.2.1"
 rand = "0.8.4"
+dirs = "5.0.1"
 
 [target.'cfg(windows)'.dependencies]
 tray-item = "0.10"
@@ -42,3 +43,6 @@ tauri-winres = "0.1"
 [package.metadata.tauri-winres]
 ProductName = "Office Template Helper"
 FileDescription = "Office Template Helper is a versatile desktop application designed to enhance the productivity of Microsoft Office users by enabling the easy integration of add-ons directly into Office files via XML modifications."
+
+[package.metadata.appimage]
+assets = ["settings", "reference"]

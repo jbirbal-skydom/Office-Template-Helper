@@ -1,3 +1,4 @@
+use dirs;
 use serde_yaml::{from_reader, Value};
 use std::collections::HashMap;
 use std::collections::HashSet;
@@ -31,8 +32,11 @@ fn load_config(file_path: &str) -> Result<HashMap<String, Value>, Box<dyn Error>
 //return a 2d array of the addon and extension sections
 pub fn initialize_addons() -> Result<(Vec<SectionDetail>, HashMap<String, Value>), Box<dyn Error>> {
     println!("Add-ons initialized.");
-    let addon = load_config("./settings/addon.yaml")?;
-    let extension = load_config("./settings/valid_file.yaml")?;
+    let config_path = dirs::home_dir()
+        .unwrap()
+        .join("office-template-helper/settings");
+    let addon = load_config(config_path.join("addon.yaml").to_str().unwrap())?;
+    let extension = load_config(config_path.join("valid_file.yaml").to_str().unwrap())?;
 
     let sections_details = collect_sections_and_counts(&addon);
 
@@ -128,16 +132,21 @@ pub fn compare_zip_files_path(ref_entries: &[String], test_entries: &[String]) -
 }
 
 // fine the associated reference zip to compare
-pub fn find_reference_zip(ext: &str) -> Result<String, Box<dyn Error>> {
+pub fn find_reference_zip(
+    ext: &str,
+    reference: &HashMap<String, Value>,
+) -> Result<String, Box<dyn Error>> {
     println!("Looking for reference zip for '{}'", ext);
-    let config = load_config("./settings/valid_file.yaml")?;
+    let config = reference;
 
     // Assume 'reference' is a top-level key in the YAML that maps to a dictionary
     if let Some(Value::Mapping(reference_map)) = config.get("reference") {
         if let Some(Value::String(refer_path)) = reference_map.get(&Value::String(ext.to_string()))
         {
-            println!("Reference zip for '{}': {}", ext, refer_path);
-            Ok(refer_path.clone())
+            // innerpath is the reference YAML file (reference/file_type.yaml) but i need to the $HOME directory and append the path
+            let full_path = dirs::home_dir().unwrap().join("office-template-helper/").join(refer_path).to_str().unwrap().to_string();
+            println!("Reference zip for '{}': {}", ext, full_path);
+            Ok(full_path.clone())
         } else {
             Err(Box::new(std::io::Error::new(
                 std::io::ErrorKind::NotFound,
@@ -231,8 +240,8 @@ pub fn print_sections(
                                     println!("- {} ({})", subsection.name, subsection.count);
                                 }
                                 message.push(subsection.name.clone());
-                                prev_subsection_name = Some(subsection.name.clone()); // Update the previous subsection name
-
+                                prev_subsection_name = Some(subsection.name.clone());
+                                // Update the previous subsection name
                             }
                         }
                     }

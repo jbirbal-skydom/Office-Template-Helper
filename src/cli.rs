@@ -41,7 +41,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!("Starting application...");
 
     // Example calls to functions in your modules
-    let (sections_details, _ext) = match addon::initialize_addons() {
+    let (sections_details, ref_ext) = match addon::initialize_addons() {
         Ok(data) => data,
         Err(e) => {
             // Log the error and exit if the initialization fails
@@ -87,7 +87,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
 
     // Compare the file paths of the original zip file with the ref zip file
-    match addon::find_reference_zip(&ext) {
+    match addon::find_reference_zip(&ext, &ref_ext ) {
         Ok(ref_zip) => {
             // Open zip and read all file paths
             let ref_entries = file_handler::open_zip(&ref_zip, false)?;
