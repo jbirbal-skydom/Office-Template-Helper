@@ -32,7 +32,7 @@ fn load_config(file_path: &str) -> Result<HashMap<String, Value>, Box<dyn Error>
 //return a 2d array of the addon and extension sections
 pub fn initialize_addons() -> Result<(Vec<SectionDetail>, HashMap<String, Value>), Box<dyn Error>> {
     println!("Add-ons initialized.");
-    let config_path = dirs::home_dir()
+    let config_path = dirs::config_local_dir()
         .unwrap()
         .join("office-template-helper/settings");
     let addon = load_config(config_path.join("addon.yaml").to_str().unwrap())?;
@@ -144,7 +144,7 @@ pub fn find_reference_zip(
         if let Some(Value::String(refer_path)) = reference_map.get(&Value::String(ext.to_string()))
         {
             // innerpath is the reference YAML file (reference/file_type.yaml) but i need to the $HOME directory and append the path
-            let full_path = dirs::home_dir().unwrap().join("office-template-helper/").join(refer_path).to_str().unwrap().to_string();
+            let full_path = dirs::config_local_dir().unwrap().join("office-template-helper/").join(refer_path).to_str().unwrap().to_string();
             println!("Reference zip for '{}': {}", ext, full_path);
             Ok(full_path.clone())
         } else {

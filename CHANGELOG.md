@@ -4,8 +4,7 @@
 
 Previous settings location will disrupt and break with this change 
 ### Added or Changed
-- Move the settings to a more accessible location 
-
+- Move the settings to a more accessible location
   | **Platform** | **Configuration Directory**               | **Example Path**                                 |
   |--------------|------------------------------------------|--------------------------------------------------|
   | **Linux**    | `$XDG_CONFIG_HOME` or `$HOME/.config`    | `/home/alice/.config`                            |
