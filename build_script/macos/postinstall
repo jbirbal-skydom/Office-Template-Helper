@@ -1,0 +1,24 @@
+#!/bin/bash
+# postinstall script example
+echo "Running postinstall script..."
+# Add your commands here
+
+
+# Define the source directories from where the installer places them
+SETTINGS_SOURCE="./settings"
+REFERENCE_SOURCE="./reference"
+
+# Define the target directories
+SETTINGS_TARGET="$HOME/Library/Application Support/office-template-helper/settings"
+REFERENCE_TARGET="$HOME/Library/Application Support/office-template-helper/reference"
+
+# Create the target directories if they do not exist
+mkdir -p "$SETTINGS_TARGET"
+mkdir -p "$REFERENCE_TARGET"
+
+# Copy the directories
+cp -R "$SETTINGS_SOURCE/"* "$SETTINGS_TARGET"
+cp -R "$REFERENCE_SOURCE/"* "$REFERENCE_TARGET"
+
+echo "Settings and reference data have been installed to $HOME/Library/Application Support/office-template-helper"
+

@@ -1,0 +1,4 @@
+#!/bin/bash
+# preinstall script example
+echo "Running preinstall script..."
+# Add your commands here

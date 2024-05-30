@@ -29,3 +29,6 @@ Cargo.lock
 .vscode/*
 test/*
 built/*
+build_script/macos/office-template-helper-CLI
+build_script/macos/office-template-helper-GUI
+build_script/macos/OfficeTemplateHelper

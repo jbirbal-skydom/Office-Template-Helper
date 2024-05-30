@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <style>
+    .background { fill: #e0f2f1; }
+    .desk { fill: #a1887f; }
+    .paper { fill: white; }
+    .tree { fill: #81c784; }
+    .leaf { fill: #aed581; }
+  </style>
+  <!-- Background -->
+  <rect width="200" height="200" class="background"/>
+  <!-- Desk -->
+  <rect x="10" y="150" width="180" height="20" class="desk"/>
+  <!-- Paper on the desk -->
+  <rect x="70" y="120" width="60" height="40" class="paper" rx="2"/>
+  <!-- Ghibli-inspired tree -->
+  <path d="M50,150 Q25,100 50,50 T50,150" class="tree"/>
+  <path d="M150,150 Q175,100 150,50 T150,150" class="tree"/>
+  <!-- Falling leaves -->
+  <ellipse cx="75" cy="75" rx="5" ry="3" class="leaf"/>
+  <ellipse cx="125" cy="85" rx="5" ry="3" class="leaf"/>
+  <ellipse cx="100" cy="95" rx="5" ry="3" class="leaf"/>
+</svg>
