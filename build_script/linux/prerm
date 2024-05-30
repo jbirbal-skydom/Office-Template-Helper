@@ -1,13 +1,44 @@
-#!/bin/sh
-set -e
+#!/bin/bash
+#DEBHELPER#
+# Enhanced pre-removal script for office-template-helper
 
-# Define the target directory
-TARGET_DIR="$HOME/office-template-helper"
+echo "Preparing to uninstall Office Template Helper..."
 
-# Check if the directory exists and remove it
-if [ -d "$TARGET_DIR" ]; then
-    echo "Removing Office Template Helper settings from $TARGET_DIR"
-    rm -rf "$TARGET_DIR"
-fi
+# Function to remove directory with user confirmation
+remove_directory() {
+    local dir=$1
+    if [ -d "$dir" ]; then
+        echo "Directory $dir exists. Checking for non-application files..."
+        # List files in directory
+        local files=$(ls -A $dir)
+        if [ -z "$files" ]; then
+            echo "Directory is empty. Removing $dir."
+            rm -rf "$dir"
+        else
+            echo "Directory is not empty. Files present: $files"
+            read -p "Do you want to remove all files in $dir? This cannot be undone. [y/N]: " response
+            case "$response" in
+                [yY][eE][sS]|[yY])
+                    echo "Removing $dir..."
+                    rm -rf "$dir"
+                    ;;
+                *)
+                    echo "Files retained. Manual cleanup may be required."
+                    ;;
+            esac
+        fi
+    else
+        echo "Directory $dir does not exist."
+    fi
+}
+
+# Define directories
+CONFIG_DIR="/home/skydom/.config/office-template-helper/settings"
+REFERENCE_DIR="/home/skydom/.config/office-template-helper/reference"
+
+# Call function to remove directories
+remove_directory "$CONFIG_DIR"
+remove_directory "$REFERENCE_DIR"
+
 
 exit 0

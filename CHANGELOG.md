@@ -5,6 +5,7 @@
 Previous settings location will disrupt and break with this change 
 ### Added or Changed
 - Move the settings to a more accessible location
+- Location have to abide by Filesystem Hierarchy Standard.
   | **Platform** | **Configuration Directory**               | **Example Path**                                 |
   |--------------|------------------------------------------|--------------------------------------------------|
   | **Linux**    | `$XDG_CONFIG_HOME` or `$HOME/.config`    | `/home/alice/.config`                            |

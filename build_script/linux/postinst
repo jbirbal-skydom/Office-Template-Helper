@@ -1,0 +1,34 @@
+#!/bin/bash
+#DEBHELPER#
+set -e  # Exit on error
+
+# Script commands
+if ! command; then
+    echo "Command failed"
+    exit 1
+fi
+
+# Get the real user's home directory, even if run as root
+if [ "$SUDO_USER" ]; then
+    REAL_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+else
+    REAL_HOME=$HOME
+fi
+
+# Directory paths
+CONFIG_DIR="$REAL_HOME/.config/office-template-helper"
+#SETTINGS_DIR="$CONFIG_DIR/settings"
+#REFERENCE_DIR="$CONFIG_DIR/reference"
+
+# Ensure the configuration directory exists
+mkdir -p "$CONFIG_DIR"
+#mkdir -p "$REFERENCE_DIR"
+
+# Copy settings and references if they don't already exist
+if [ -z "$(ls -A $CONFIG_DIR)" ]; then
+    cp -r /usr/share/office-template-helper/settings/ "$CONFIG_DIR/"
+    cp -r /usr/share/office-template-helper/reference/ "$CONFIG_DIR/"
+fi
+
+#DEBHELPER#
+echo "Office Template Helper configuration is set up."

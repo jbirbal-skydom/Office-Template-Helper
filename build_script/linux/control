@@ -1,7 +1,13 @@
+Source: office-template-helper
+Standards-Version: 4.6.0.1
+Section: utils
+Priority: optional
+Maintainer: Jason Birbal <jbirbal@skydom.ai>
+Build-Depends: debhelper (>= 12)
+Vcs-Git: https://github.com/jbirbal-skydom/Office-Template-Helper.git
+Vcs-Browser: https://github.com/jbirbal-skydom/Office-Template-Helper
+
 Package: office-template-helper
-Version: 1.0.0-1
-Maintainer: example <example@example.com>
-Depends: zenity
 Architecture: amd64
-Homepage: https://github.com/jbirbal-skydom/Office-Template-Helper
+Depends: ${shlibs:Depends}, ${misc:Depends}, zenity
 Description: Office Template Helper is a versatile desktop application designed to enhance the productivity of Microsoft Office users by enabling the easy integration of add-ons directly into Office files via XML modifications.
