@@ -160,12 +160,15 @@ To get started with Office Template Helper, follow these steps:
 
    ```sh
    windres app_icon.rc -O coff -o app_icon.res
-
    ```
 
 4. Build `cargo build`
    1. Linux
-      1. cargo build --target x86_64-unknown-linux-gnu
+
+       ```sh
+       cargo build --target x86_64-unknown-linux-gnu
+       ```
+
    2. Windows
 
       ```sh
