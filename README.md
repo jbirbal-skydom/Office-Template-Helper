@@ -398,5 +398,5 @@ Project Link: [https://github.com/jbirbal-skydom/Office-Template-Helper](https:/
 [GCC-url]: https://gcc.gnu.org/
 
 <!-- links -->
-[OOXML]: (http://officeopenxml.com/)
-[Releases]: (https://github.com/jbirbal-skydom/Office-Template-Helper/releases)
+[OOXML]: http://officeopenxml.com/
+[Releases]: https://github.com/jbirbal-skydom/Office-Template-Helper/releases
