@@ -131,14 +131,15 @@ The only dependency was for WSL:
 ### Installation
 
 * Windows
-  * Download release
+  * See [Releases] or [Download](https://github.com/jbirbal-skydom/Office-Template-Helper/releases/download/1.0.0/office-template-helper.exe)
 * MacOS
-  * Download release
+  *  See [Releases] or [Download](https://github.com/jbirbal-skydom/Office-Template-Helper/releases/download/1.0.0/OfficeTemplateHelper.dmg)
 * Linux / WSL
+  * Most current: 
+    * See [Releases] or [Download](https://github.com/jbirbal-skydom/Office-Template-Helper/releases/download/1.0.0/office-template-helper_1.0.0-1_amd64.deb)
   * `sudo add-apt-repository ppa:skydom/office-template-helper`
   * `sudo apt-get update`
   * `sudo apt-get install office-template-helper`
-
 ### Build
 
 To get started with Office Template Helper, follow these steps:
@@ -398,3 +399,4 @@ Project Link: [https://github.com/jbirbal-skydom/Office-Template-Helper](https:/
 
 <!-- links -->
 [OOXML]: (http://officeopenxml.com/)
+[Releases]: (https://github.com/jbirbal-skydom/Office-Template-Helper/releases)
